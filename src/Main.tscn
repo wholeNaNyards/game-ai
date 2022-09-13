@@ -18,8 +18,6 @@ position = Vector2( 176, -11 )
 
 [node name="AI" parent="." instance=ExtResource( 2 )]
 position = Vector2( 200, 117 )
-initial_target = NodePath("../AI2")
 
 [node name="AI2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 472, 21 )
-initial_target = NodePath("../AI")

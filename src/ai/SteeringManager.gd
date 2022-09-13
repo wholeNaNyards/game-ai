@@ -4,12 +4,39 @@ onready var host: MovingEntity = owner
 var steering_force = Vector2()
 var wander_angle : float = 0.0
 
+# DEBUG Options
+#export (bool) var enable_debug = true
+#var desired_velocity : Vector2
+#var steering : Vector2
+#var behavior : String
+#var wander_circle_center : Vector2
+#var target_pos : Vector2
+#var start_pos : Vector2
+#
+#func _draw() -> void:
+#	if (enable_debug):
+#		draw_line(Vector2.ZERO, velocity, Color.green, 3.0)
+#		if behavior == "wander":
+#			draw_arc(wander_circle_center, wander_radius, 0, 2 * PI, 100, Color.red, 3.0)
+#			draw_line(Vector2(wander_distance, -32), target_pos, Color.green, 3.0)
+#		elif behavior == "seek" or behavior == "flee" or behavior == "arrive":
+#			draw_line(Vector2.ZERO, desired_velocity, Color.gray, 3.0)
+#			draw_line(velocity, steering, Color.blue, 3.0)
+#		elif behavior == "return":
+#			draw_line(Vector2.ZERO, start_pos, Color.black, 3.0)
+
 func reset() -> void:
 	steering_force = Vector2()
 	wander_angle = 0.0
 
-func physics_process(delta: float) -> void:
-	pass
+func calculate(delta: float) -> Vector2:
+	var host_velocity = host.get_velocity()
+
+	steering_force = truncate(steering_force, host.get_max_force())
+	var steering_acceleration = steering_force / host.get_mass()
+	steering_acceleration *= delta
+
+	return truncate(host_velocity + steering_acceleration, host.get_max_speed())
 
 func seek(target_position : Vector2, slowing_radius : float = 200.0) -> void:
 	steering_force += _do_seek(target_position, slowing_radius)
@@ -75,3 +102,8 @@ func _do_evade(pursuer: MovingEntity) -> Vector2:
 	var future_position = pursuer.position + (pursuer.velocity * future_frames)
 
 	return _do_flee(future_position)
+
+func truncate(vector: Vector2, max_value: float) -> Vector2:
+	if vector.length_squared() > (max_value * max_value):
+		return vector.normalized() * max_value
+	return vector
