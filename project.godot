@@ -53,6 +53,11 @@ _global_script_classes=[ {
 "class": "StateWalking",
 "language": "GDScript",
 "path": "res://src/player/StateWalking.gd"
+}, {
+"base": "Node2D",
+"class": "SteeringManager",
+"language": "GDScript",
+"path": "res://src/ai/SteeringManager.gd"
 } ]
 _global_script_class_icons={
 "AI": "",
@@ -63,7 +68,8 @@ _global_script_class_icons={
 "StateIdle": "",
 "StateMachine": "",
 "StateStanding": "",
-"StateWalking": ""
+"StateWalking": "",
+"SteeringManager": ""
 }
 
 [application]

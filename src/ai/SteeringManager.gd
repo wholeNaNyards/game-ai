@@ -1,3 +1,4 @@
+class_name SteeringManager
 extends Node2D
 
 onready var host: MovingEntity = owner
