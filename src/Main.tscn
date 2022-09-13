@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://src/player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/ai/AI.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/background.png" type="Texture" id=3]
+[ext_resource path="res://src/Main.gd" type="Script" id=4]
+
+[node name="Main" type="Node2D"]
+position = Vector2( 0, 3 )
+script = ExtResource( 4 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 120, 173 )
+texture = ExtResource( 3 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 176, -11 )
+
+[node name="AI" parent="." instance=ExtResource( 2 )]
+position = Vector2( 200, 117 )
+initial_target = NodePath("../AI2")
+
+[node name="AI2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 472, 21 )
+initial_target = NodePath("../AI")
