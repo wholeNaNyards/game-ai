@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/ai/Prey.tscn" type="PackedScene" id=1]
-[ext_resource path="res://src/ai/Predator.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/Rock.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/background.png" type="Texture" id=3]
 [ext_resource path="res://src/Main.gd" type="Script" id=4]
+[ext_resource path="res://src/player/Player.tscn" type="PackedScene" id=5]
 
 [node name="Main" type="Node2D"]
 position = Vector2( 0, 3 )
@@ -13,8 +14,69 @@ script = ExtResource( 4 )
 position = Vector2( 120, 173 )
 texture = ExtResource( 3 )
 
-[node name="Prey" parent="." instance=ExtResource( 1 )]
-position = Vector2( -384, 93 )
+[node name="Player" parent="." instance=ExtResource( 5 )]
+position = Vector2( 88, -75 )
 
-[node name="Predator" parent="." instance=ExtResource( 2 )]
-position = Vector2( 720, -67 )
+[node name="Rocks" type="Node2D" parent="."]
+visible = false
+
+[node name="Rock" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 368, 157 )
+
+[node name="Rock2" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( -48, 269 )
+
+[node name="Rock3" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 176, 225 )
+
+[node name="Rock4" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 376, 29 )
+
+[node name="Rock5" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 64, -55 )
+
+[node name="Rock6" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( -112, 45 )
+
+[node name="Rock10" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 312, -179 )
+
+[node name="Rock11" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 40, -155 )
+
+[node name="Rock7" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 352, -75 )
+
+[node name="Rock8" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( -192, 245 )
+
+[node name="Rock9" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( -256, 93 )
+
+[node name="Rock12" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 54, -251 )
+
+[node name="Rock13" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 72, -351 )
+
+[node name="Rock14" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 360, -355 )
+
+[node name="Rock15" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 216, -387 )
+
+[node name="Prey" parent="." instance=ExtResource( 1 )]
+position = Vector2( 104, 45 )
+max_speed = 2000
+mass = 1.0
+max_force = 2000.0
+initial_leader = NodePath("../Player")
+offset = Vector2( -50, -50 )
+
+[node name="Prey2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 233, 37 )
+max_speed = 2000
+mass = 1.0
+max_force = 2000.0
+initial_leader = NodePath("../Player")
+offset = Vector2( 0, -50 )

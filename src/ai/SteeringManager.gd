@@ -31,7 +31,7 @@ func reset() -> void:
 	wander_angle = 0.0
 
 func calculate(delta: float) -> Vector2:
-	var host_velocity = host.get_velocity()
+	var host_velocity = Vector2.ZERO
 
 	steering_force = truncate(steering_force, host.get_max_force())
 	var steering_acceleration = steering_force / host.get_mass()
@@ -53,6 +53,12 @@ func pursuit(evader: MovingEntity) -> void:
 
 func evade(pursuer: MovingEntity) -> void:
 	steering_force += _do_evade(pursuer)
+
+func obstacle_avoidance(body: Node2D, box_length: float) -> void:
+	steering_force += _do_obstacle_avoidance(body, box_length)
+
+func offset_pursuit(leader: MovingEntity, offset: Vector2) -> void:
+	steering_force += _do_offset_pursuit(leader, offset)
 
 func _do_seek(target_position : Vector2, slowing_radius : float = 0.0) -> Vector2:
 	var desired_velocity = target_position - host.get_position()
@@ -92,7 +98,7 @@ func _do_pursuit(evader: MovingEntity) -> Vector2:
 	var distance = evader.position - host.get_position()
 	var future_frames = distance.length() / evader.max_speed
 	# Calculate where evader will be future_frames ahead
-	var future_position = evader.position + (evader.velocity * future_frames)
+	var future_position = evader.position + (evader.get_velocity() * future_frames)
 
 	return _do_seek(future_position, 0.0)
 
@@ -100,9 +106,45 @@ func _do_evade(pursuer: MovingEntity) -> Vector2:
 	var distance = pursuer.position - host.get_position()
 	var future_frames = distance.length() / pursuer.max_speed
 	# Calculate where pursuer will be future_frames ahead
-	var future_position = pursuer.position + (pursuer.velocity * future_frames)
+	var future_position = pursuer.position + (pursuer.get_velocity() * future_frames)
 
 	return _do_flee(future_position)
+
+func _do_obstacle_avoidance(body: Node2D, box_length: float) -> Vector2:
+	var collider = body.get_node("CollisionShape2D")
+	if not collider:
+		return Vector2.ZERO
+	
+	var obstacle_local : Vector2 = to_local(body.global_position)
+
+	# Calculate Lateral Force
+	var multiplier = 1.0 + (box_length - obstacle_local.x) / box_length
+	var lateral_force = (collider.shape.extents.y / 2 - obstacle_local.y) * multiplier
+
+	# Calculate Braking Force
+	var breaking_weight = 0.2
+	var braking_force = (collider.shape.extents.x / 2 - obstacle_local.x) * breaking_weight
+
+	return to_global(Vector2(braking_force, lateral_force))
+
+func _do_offset_pursuit(leader: MovingEntity, offset: Vector2) -> Vector2:
+	# Calculate offset's position in global space
+	var leader_velocity = leader.get_velocity()
+	var global_offset_position = Vector2.ZERO
+	if leader_velocity.x >= 0:
+		global_offset_position.x = leader.global_position.x - offset.x
+	else:
+		global_offset_position.x = leader.global_position.x + offset.x
+	if leader_velocity.y >= 0:
+		global_offset_position.y = leader.global_position.y - offset.y
+	else:
+		global_offset_position.y = leader.global_position.y + offset.y
+
+	var to_offset : Vector2 = global_offset_position - host.get_position()
+	
+	var look_ahead_time : float = to_offset.length() / (host.get_max_speed() + leader_velocity.length())
+
+	return _do_seek(global_offset_position + leader_velocity * look_ahead_time)
 
 func truncate(vector: Vector2, max_value: float) -> Vector2:
 	if vector.length_squared() > (max_value * max_value):

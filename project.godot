@@ -127,6 +127,14 @@ pursuit={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_2="enemy"
+2d_physics/layer_3="prey"
+2d_physics/layer_4="predator"
+2d_physics/layer_5="objects"
+
 [physics]
 
 common/enable_pause_aware_picking=true
