@@ -50,6 +50,3 @@ playing = true
 
 [node name="StateMachine" parent="." instance=ExtResource( 3 )]
 position = Vector2( 32, 0 )
-
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true

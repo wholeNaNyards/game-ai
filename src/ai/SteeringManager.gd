@@ -134,7 +134,7 @@ func _do_obstacle_avoidance(raycasts: Node2D, max_avoid_force: float) -> Vector2
 			var obstacle : PhysicsBody2D = raycast.get_collider()
 			var avoid_direction = host.get_position() + host_velocity - obstacle.global_position
 			return avoid_direction.normalized() * max_avoid_force
-	
+
 	return Vector2.ZERO
 
 func _do_offset_pursuit(leader: MovingEntity, offset: float) -> Vector2:
@@ -149,23 +149,6 @@ func _do_offset_pursuit(leader: MovingEntity, offset: float) -> Vector2:
 	var behind : Vector2 = Vector2(leader_position.x, leader_position.y) + tv
 
 	return _do_seek(behind)
-#	# Calculate offset's position in global space
-#	var leader_velocity = leader.get_velocity()
-#	var global_offset_position = Vector2.ZERO
-#	if leader_velocity.x >= 0:
-#		global_offset_position.x = leader.global_position.x - offset.x
-#	else:
-#		global_offset_position.x = leader.global_position.x + offset.x
-#	if leader_velocity.y >= 0:
-#		global_offset_position.y = leader.global_position.y - offset.y
-#	else:
-#		global_offset_position.y = leader.global_position.y + offset.y
-#
-#	var to_offset : Vector2 = global_offset_position - host.get_position()
-#
-#	var look_ahead_time : float = to_offset.length() / (host.get_speed() + leader_velocity.length())
-#
-#	return _do_seek(global_offset_position + leader_velocity * look_ahead_time)
 
 func limit(vector: Vector2, max_value: float) -> Vector2:
 	if vector.length_squared() > max_value * max_value:

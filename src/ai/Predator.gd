@@ -7,13 +7,6 @@ onready var stamina : int = max_stamina
 var resting : bool = false
 var prey : AI
 
-onready var starting_position = position
-
-# Obstacle Avoidance
-export var avoid_collisions = true
-var max_avoid_force : float = 500
-onready var raycasts : Node2D = $Raycasts
-
 func _ready() -> void:
 	animated_sprite.play("walking")
 
@@ -23,12 +16,8 @@ func _physics_process(_delta: float) -> void:
 	else:
 		animated_sprite.flip_h = true
 
-	if avoid_collisions:
+	if obstacle_avoidance:
 		steering_manager.obstacle_avoidance(raycasts, max_avoid_force)
-
-#	if position.distance_to(starting_position) > 1000:
-#		steering_manager.seek(starting_position)
-#		return
 
 	if resting:
 		stamina += 1

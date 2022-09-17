@@ -91,3 +91,8 @@ collision_mask = 0
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Walls/WallRight"]
 position = Vector2( 8, 168 )
 shape = SubResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( -840, -371 )
+anchor_mode = 0
+current = true

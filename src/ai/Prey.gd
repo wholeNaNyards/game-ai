@@ -11,11 +11,6 @@ export var initial_leader := NodePath()
 var leader: MovingEntity
 export var offset : float = 200
 
-# Obstacle Avoidance
-export var avoid_collisions = true
-var max_avoid_force : float = 500
-onready var raycasts : Node2D = $Raycasts
-
 func _ready() -> void:
 	animated_sprite.play("walking")
 	if initial_leader:
@@ -29,13 +24,8 @@ func _physics_process(_delta: float) -> void:
 	else:
 		animated_sprite.flip_h = true
 
-	if avoid_collisions:
-		steering_manager.obstacle_avoidance(raycasts, max_avoid_force)
-
 	if leader:
 		steering_manager.offset_pursuit(leader, offset)
-#	elif position.distance_to(starting_position) > 500:
-#		steering_manager.seek(starting_position)
 	elif predator != null:
 		steering_manager.evade(predator)
 	elif Input.is_action_pressed("left_click"):
