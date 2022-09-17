@@ -8,17 +8,16 @@
 extents = Vector2( 24, 32 )
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 768.0
+radius = 316.986
 
 [node name="Predator" instance=ExtResource( 1 )]
 collision_layer = 8
-collision_mask = 4
+collision_mask = 21
 script = ExtResource( 2 )
-mass = 5.0
 max_stamina = 2000
+avoid_collisions = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
-position = Vector2( 0, -32 )
 shape = SubResource( 2 )
 
 [node name="PreyDetector" type="Area2D" parent="." index="2"]
@@ -31,10 +30,31 @@ position = Vector2( 0, -32 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="." index="3"]
-position = Vector2( 0, -32 )
 scale = Vector2( 0.5, 0.5 )
 frames = ExtResource( 3 )
 animation = "walking"
+
+[node name="Raycasts" type="Node2D" parent="." index="4"]
+position = Vector2( 0, 16 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="RayCast2D" type="RayCast2D" parent="Raycasts" index="0"]
+position = Vector2( 0, -72 )
+enabled = true
+cast_to = Vector2( 48, 0 )
+collision_mask = 17
+
+[node name="RayCast2D2" type="RayCast2D" parent="Raycasts" index="1"]
+position = Vector2( 0, -32 )
+enabled = true
+cast_to = Vector2( 48, 0 )
+collision_mask = 17
+
+[node name="RayCast2D3" type="RayCast2D" parent="Raycasts" index="2"]
+position = Vector2( 0, 8 )
+enabled = true
+cast_to = Vector2( 48, 0 )
+collision_mask = 17
 
 [connection signal="body_entered" from="PreyDetector" to="." method="_on_PreyDetector_body_entered"]
 [connection signal="body_exited" from="PreyDetector" to="." method="_on_PreyDetector_body_exited"]

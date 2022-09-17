@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/ai/AI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/ai/Prey.gd" type="Script" id=2]
@@ -8,27 +8,21 @@
 extents = Vector2( 24, 32 )
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 320.0
-
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 24, 16 )
+radius = 184.567
 
 [node name="Prey" instance=ExtResource( 1 )]
 position = Vector2( 1, 0 )
 collision_layer = 4
-collision_mask = 24
+collision_mask = 25
 script = ExtResource( 2 )
-mass = 5.0
 initial_leader = NodePath("")
-min_box_length = 25
-offset = Vector2( 0, 0 )
+offset = 200.0
+avoid_collisions = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
-position = Vector2( 0, -32 )
 shape = SubResource( 2 )
 
 [node name="PredatorDetector" type="Area2D" parent="." index="2"]
-visible = false
 collision_layer = 4
 collision_mask = 8
 monitorable = false
@@ -38,22 +32,31 @@ position = Vector2( 0, -32 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="." index="3"]
-position = Vector2( 0, -32 )
+position = Vector2( -1, 0 )
 scale = Vector2( 0.5, 0.5 )
 frames = ExtResource( 3 )
 animation = "walking"
 
-[node name="Camera2D" type="Camera2D" parent="." index="4"]
-zoom = Vector2( 0.5, 0.5 )
+[node name="Raycasts" type="Node2D" parent="." index="4"]
+position = Vector2( 0, 32 )
 
-[node name="ObstacleDetector" type="Area2D" parent="." index="5"]
-collision_layer = 0
-collision_mask = 16
+[node name="RayCast2D" type="RayCast2D" parent="Raycasts" index="0"]
+position = Vector2( 0, -72 )
+enabled = true
+cast_to = Vector2( 48, 0 )
+collision_mask = 17
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ObstacleDetector" index="0"]
-position = Vector2( 0, -16 )
-shape = SubResource( 3 )
+[node name="RayCast2D2" type="RayCast2D" parent="Raycasts" index="1"]
+position = Vector2( 0, -32 )
+enabled = true
+cast_to = Vector2( 48, 0 )
+collision_mask = 17
+
+[node name="RayCast2D3" type="RayCast2D" parent="Raycasts" index="2"]
+position = Vector2( 0, 8 )
+enabled = true
+cast_to = Vector2( 48, 0 )
+collision_mask = 17
 
 [connection signal="body_entered" from="PredatorDetector" to="." method="_on_PredatorDetector_body_entered"]
 [connection signal="body_exited" from="PredatorDetector" to="." method="_on_PredatorDetector_body_exited"]
-[connection signal="body_entered" from="ObstacleDetector" to="." method="_on_ObstacleDetector_body_entered"]

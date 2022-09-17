@@ -3,7 +3,6 @@ extends MovingEntity
 
 export (float, 0, 1.0) var friction = 0.5
 export (float, 0, 1.0) var acceleration = 0.5
-export (int, 100, 2000) var speed = 500
 
 onready var state_machine = $StateMachine
 onready var animated_sprite = $AnimatedSprite

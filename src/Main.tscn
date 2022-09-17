@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/ai/Prey.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/Rock.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/background.png" type="Texture" id=3]
 [ext_resource path="res://src/Main.gd" type="Script" id=4]
 [ext_resource path="res://src/player/Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/ai/Predator.tscn" type="PackedScene" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 984, 12 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16, 560 )
 
 [node name="Main" type="Node2D"]
 position = Vector2( 0, 3 )
@@ -15,68 +22,72 @@ position = Vector2( 120, 173 )
 texture = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 5 )]
-position = Vector2( 88, -75 )
-
-[node name="Rocks" type="Node2D" parent="."]
-visible = false
-
-[node name="Rock" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 368, 157 )
-
-[node name="Rock2" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( -48, 269 )
-
-[node name="Rock3" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 176, 225 )
-
-[node name="Rock4" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 376, 29 )
-
-[node name="Rock5" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 64, -55 )
-
-[node name="Rock6" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( -112, 45 )
-
-[node name="Rock10" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 312, -179 )
-
-[node name="Rock11" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 40, -155 )
-
-[node name="Rock7" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 352, -75 )
-
-[node name="Rock8" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( -192, 245 )
-
-[node name="Rock9" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( -256, 93 )
-
-[node name="Rock12" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 54, -251 )
-
-[node name="Rock13" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 72, -351 )
-
-[node name="Rock14" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 360, -355 )
-
-[node name="Rock15" parent="Rocks" instance=ExtResource( 2 )]
-position = Vector2( 216, -387 )
+position = Vector2( 90, -227 )
+collision_mask = 16
 
 [node name="Prey" parent="." instance=ExtResource( 1 )]
-position = Vector2( 104, 45 )
-max_speed = 2000
-mass = 1.0
-max_force = 2000.0
-initial_leader = NodePath("../Player")
-offset = Vector2( -50, -50 )
+position = Vector2( -16, 85 )
 
-[node name="Prey2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 233, 37 )
-max_speed = 2000
-mass = 1.0
-max_force = 2000.0
-initial_leader = NodePath("../Player")
-offset = Vector2( 0, -50 )
+[node name="Predator" parent="." instance=ExtResource( 6 )]
+position = Vector2( 696, 21 )
+
+[node name="Rocks" type="Node2D" parent="."]
+
+[node name="Rock" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 528, -83 )
+
+[node name="Rock2" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( -368, -51 )
+
+[node name="Rock5" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( -488, 253 )
+
+[node name="Rock6" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( -464, 573 )
+
+[node name="Rock7" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 784, 453 )
+
+[node name="Rock3" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( -16, 501 )
+
+[node name="Rock4" parent="Rocks" instance=ExtResource( 2 )]
+position = Vector2( 442, 325 )
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="WallTop" type="StaticBody2D" parent="Walls"]
+position = Vector2( -336, -371 )
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallTop"]
+position = Vector2( 456, -4 )
+shape = SubResource( 1 )
+
+[node name="WallLeft" type="StaticBody2D" parent="Walls"]
+position = Vector2( -840, 709 )
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallLeft"]
+position = Vector2( -8, -536 )
+shape = SubResource( 2 )
+
+[node name="WallBottom" type="StaticBody2D" parent="Walls"]
+position = Vector2( 4, 1085 )
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Walls/WallBottom"]
+position = Vector2( 120, -375 )
+shape = SubResource( 1 )
+
+[node name="WallRight" type="StaticBody2D" parent="Walls"]
+position = Vector2( 1072, 5 )
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Walls/WallRight"]
+position = Vector2( 8, 168 )
+shape = SubResource( 2 )
