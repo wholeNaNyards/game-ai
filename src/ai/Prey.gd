@@ -1,7 +1,7 @@
 extends AI
 
 onready var animated_sprite : AnimatedSprite = $AnimatedSprite
-onready var starting_position = position
+onready var state_machine : StateMachine = $StateMachine
 
 # Avoidance Steering
 var predator : AI
@@ -12,27 +12,23 @@ var leader: MovingEntity
 export var offset : float = 200
 
 func _ready() -> void:
-	animated_sprite.play("walking")
 	if initial_leader:
 		leader = get_node(initial_leader)
+	state_machine.set_global_state(PreyStateGlobal.new())
+	change_state("WANDERING")
 
-func _physics_process(_delta: float) -> void:
-#	animated_sprite.rotation = velocity.angle()
+func change_state(new_state: String) -> void:
+	if new_state == "WANDERING":
+		state_machine.change_state(PreyStateWandering.new())
+	elif new_state == "FLEEING":
+		state_machine.change_state(PreyStateFleeing.new())
+	elif new_state == "FOLLOWING":
+		state_machine.change_state(PreyStateFollowing.new())
+	elif new_state == "SEEKING":
+		state_machine.change_state(PreyStateSeeking.new())
 
-	if velocity.x >= 0:
-		animated_sprite.flip_h = false
-	else:
-		animated_sprite.flip_h = true
-
-	if leader:
-		steering_manager.offset_pursuit(leader, offset)
-	elif predator != null:
-		steering_manager.evade(predator)
-	elif Input.is_action_pressed("left_click"):
-		var mouse_pos = get_global_mouse_position()
-		steering_manager.seek(mouse_pos)
-	else:
-		steering_manager.wander(wander_distance, wander_radius, wander_angle_change)
+func _physics_process(delta: float) -> void:
+	state_machine.physics_process(delta)
 
 func _on_PredatorDetector_body_entered(body: AI) -> void:
 	if body:
@@ -44,3 +40,6 @@ func _on_PredatorDetector_body_exited(body: AI) -> void:
 
 func get_animated_sprite() -> AnimatedSprite:
 	return animated_sprite
+
+func get_fsm() -> StateMachine:
+	return state_machine

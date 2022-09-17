@@ -1,6 +1,7 @@
 extends AI
 
 onready var animated_sprite = $AnimatedSprite
+onready var state_machine : StateMachine = $StateMachine
 
 export (int, 1, 5000) var max_stamina = 2000
 onready var stamina : int = max_stamina
@@ -8,31 +9,19 @@ var resting : bool = false
 var prey : AI
 
 func _ready() -> void:
-	animated_sprite.play("walking")
+	state_machine.set_global_state(PredatorStateGlobal.new())
+	change_state("HUNTING")
 
-func _physics_process(_delta: float) -> void:
-	if velocity.x >= 0:
-		animated_sprite.flip_h = false
-	else:
-		animated_sprite.flip_h = true
+func change_state(new_state: String) -> void:
+	if new_state == "HUNTING":
+		state_machine.change_state(PredatorStateHunting.new())
+	elif new_state == "CHASING":
+		state_machine.change_state(PredatorStateChasing.new())
+	elif new_state == "RESTING":
+		state_machine.change_state(PredatorStateResting.new())
 
-	if obstacle_avoidance:
-		steering_manager.obstacle_avoidance(raycasts, max_avoid_force)
-
-	if resting:
-		stamina += 1
-		if stamina >= max_stamina:
-			resting = false
-
-	if prey != null and !resting:
-		steering_manager.pursuit(prey)
-		stamina -= 2
-
-		if stamina <= 0:
-			prey = null
-			resting = true
-	else:
-		steering_manager.wander(wander_distance, wander_radius, wander_angle_change)
+func _physics_process(delta: float) -> void:
+	state_machine.physics_process(delta)
 
 func _on_PreyDetector_body_entered(body: AI) -> void:
 	if body:
@@ -44,3 +33,6 @@ func _on_PreyDetector_body_exited(body: AI) -> void:
 
 func get_animated_sprite() -> AnimatedSprite:
 	return animated_sprite
+
+func get_fsm() -> StateMachine:
+	return state_machine

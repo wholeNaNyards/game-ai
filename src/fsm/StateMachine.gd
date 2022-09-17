@@ -33,7 +33,8 @@ func physics_process(delta: float) -> void:
 	if global_state:
 		global_state.execute_physics_process(owner, delta)
 
-	current_state.execute_physics_process(owner, delta)
+	if current_state:
+		current_state.execute_physics_process(owner, delta)
 
 func update_label(new_text: String) -> void:
 	label.text = new_text
