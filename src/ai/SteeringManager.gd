@@ -4,6 +4,8 @@ extends Node2D
 onready var host: MovingEntity = owner
 var acceleration = Vector2()
 var wander_angle : float = 0.0
+var separation_radius: float = 150.0
+var max_separation = 500.0
 
 # DEBUG Options
 #export (bool) var enable_debug = true
@@ -42,51 +44,50 @@ func apply_force(steering_force : Vector2) -> void:
 	var new_acceleration = steering_force / host.get_mass()
 	acceleration += new_acceleration
 
-func seek(target_position : Vector2, slowing_radius : float = 1000.0) -> void:
-	var steering_force = _do_seek(target_position, slowing_radius)
-	apply_force(steering_force)
+func seek(target_position : Vector2, slowing_radius : float = 250.0) -> void:
+	_do_seek(target_position, slowing_radius)
 
 func flee(target_position : Vector2) -> void:
-	var steering_force = _do_flee(target_position)
-	apply_force(steering_force)
+	_do_flee(target_position)
 
 func wander(wander_distance : int, wander_radius: int, wander_angle_change : float) -> void:
-	var steering_force = _do_wander(wander_distance, wander_radius, wander_angle_change)
-	apply_force(steering_force)
+	_do_wander(wander_distance, wander_radius, wander_angle_change)
 
 func pursuit(evader: MovingEntity) -> void:
-	var steering_force = _do_pursuit(evader)
-	apply_force(steering_force)
+	_do_pursuit(evader)
 
 func evade(pursuer: MovingEntity) -> void:
-	var steering_force = _do_evade(pursuer)
-	apply_force(steering_force)
+	_do_evade(pursuer)
 
 func obstacle_avoidance(raycasts: Node2D, max_avoid_force: float) -> void:
-	var steering_force = _do_obstacle_avoidance(raycasts, max_avoid_force)
-	apply_force(steering_force)
+	_do_obstacle_avoidance(raycasts, max_avoid_force)
 
-func offset_pursuit(leader: MovingEntity, offset: float) -> void:
-	var steering_force = _do_offset_pursuit(leader, offset)
-	apply_force(steering_force)
+func separation(group: String) -> void:
+	_do_separation(group)
 
-func _do_seek(target_position : Vector2, slowing_radius : float = 1000.0) -> Vector2:
+func offset_pursuit(leader: MovingEntity, offset: float, group: String) -> void:
+	_do_offset_pursuit(leader, offset, group)
+
+func _do_seek(target_position : Vector2, slowing_radius : float = 250.0):
 	var desired_direction = target_position - host.get_position()
-	var desired_velocity = desired_direction.normalized() * host.get_speed()
+	var distance = desired_direction.length()
+	var desired_velocity: Vector2
 
 	# Start slowing down if we're withing the slowdown area
-	if desired_velocity.length_squared() < (slowing_radius * slowing_radius):
-		desired_velocity *= (desired_velocity.length() / slowing_radius)
+	if distance < slowing_radius:
+		desired_velocity = desired_direction.normalized() * host.get_speed() * (distance / slowing_radius)
+	else:
+		desired_velocity = desired_direction.normalized() * host.get_speed()
 
-	return desired_velocity - host.get_velocity()
+	apply_force(desired_velocity - host.get_velocity())
 
-func _do_flee(target_position : Vector2) -> Vector2:
+func _do_flee(target_position : Vector2):
 	var desired_direction = host.get_position() - target_position
 	var desired_velocity = desired_direction.normalized() * host.get_speed()
 
-	return desired_velocity - host.get_velocity()
+	apply_force(desired_velocity - host.get_velocity())
 
-func _do_wander(wander_distance : int, wander_radius: int, wander_angle_change : float) -> Vector2:
+func _do_wander(wander_distance : int, wander_radius: int, wander_angle_change : float):
 	var host_velocity = host.get_velocity()
 		# Calculate the circle center
 	var wander_circle_center = Vector2(host_velocity.x, host_velocity.y)
@@ -102,56 +103,83 @@ func _do_wander(wander_distance : int, wander_radius: int, wander_angle_change :
 	# Change wander_angle just a bit, so it won't have the same value in the next frame
 	wander_angle += randf() * wander_angle_change - wander_angle_change * 0.5
 
-	return wander_circle_center + displacement
+	apply_force(wander_circle_center + displacement)
 
-func _do_pursuit(evader: MovingEntity) -> Vector2:
+func _do_pursuit(evader: MovingEntity):
 	var evader_position = evader.get_position()
 	var desired_position = evader_position - host.get_position()
 	var updates_ahead = desired_position.length() / evader.get_max_speed()
 	# Calculate where evader will be updates_ahead ahead
 	var future_position = evader_position + (evader.get_velocity() * updates_ahead)
 
-	return _do_seek(future_position)
+	_do_seek(future_position)
 
-func _do_evade(pursuer: MovingEntity) -> Vector2:
+func _do_evade(pursuer: MovingEntity):
 	var pursuer_position = pursuer.get_position()
 	var distance = pursuer_position - host.get_position()
 	var updates_ahead = distance.length() / pursuer.get_max_speed()
 	# Calculate where pursuer will be updates_ahead ahead
 	var future_position = pursuer_position + (pursuer.get_velocity() * updates_ahead)
 
-	return _do_flee(future_position)
+	_do_flee(future_position)
 
-func _do_obstacle_avoidance(raycasts: Node2D, max_avoid_force: float) -> Vector2:
+func _do_obstacle_avoidance(raycasts: Node2D, max_avoid_force: float):
 	var host_velocity = host.get_velocity()
 	raycasts.rotation = host_velocity.angle()
-	
+
 	var length = host_velocity.length()
 	for raycast in raycasts.get_children():
 		raycast = raycast as RayCast2D
 		raycast.cast_to.x = length
+		raycast.force_raycast_update()
 		if raycast.is_colliding():
 			var obstacle : PhysicsBody2D = raycast.get_collider()
 			var avoid_direction = host.get_position() + host_velocity - obstacle.global_position
-			return avoid_direction.normalized() * max_avoid_force
+			apply_force(avoid_direction.normalized() * max_avoid_force)
 
-	return Vector2.ZERO
+func _do_offset_pursuit(leader: MovingEntity, offset: float, group: String):
+	var leader_sight_radius = 50.0
 
-func _do_offset_pursuit(leader: MovingEntity, offset: float) -> Vector2:
-	var leader_velocity = leader.get_velocity()
-	var tv : Vector2 = Vector2(leader_velocity.x, leader_velocity.y)
-	
-	tv *= -1
-	tv = tv.normalized()
-	tv *= offset
-
+	var tv = leader.get_velocity().normalized() * offset
 	var leader_position = leader.get_position()
-	var behind : Vector2 = Vector2(leader_position.x, leader_position.y) + tv
 
-	return _do_seek(behind)
+	var ahead: Vector2 = leader_position + tv
+	tv *= -1
+	var behind: Vector2 = leader_position + tv
+
+	var host_position = host.get_position()
+	var in_leader_way = host_position.distance_to(leader_position) <= leader_sight_radius
+	var in_leader_future_way = host_position.distance_to(ahead) <= leader_sight_radius
+
+	if in_leader_way or in_leader_future_way:
+		_do_evade(leader)
+
+	_do_seek(behind + leader.get_position())
+	_do_separation(group)
+
+func _do_separation(group : String):
+	var force: Vector2 = Vector2()
+	var neighbor_count: float = 0.0
+
+	for entity in  get_tree().get_nodes_in_group(group):
+		var entity_position: Vector2 = entity.global_position
+		var host_position: Vector2 = host.get_position()
+		if entity != self and entity_position.distance_to(host_position) <= separation_radius:
+			force.x += entity_position.x - host_position.x
+			force.y += entity_position.y - host_position.y
+			neighbor_count += 1
+
+	if neighbor_count != 0:
+		force.x /= neighbor_count
+		force.y /= neighbor_count
+		force *= -1
+		return force.normalized() * max_separation
+
+	apply_force(force)
 
 func limit(vector: Vector2, max_value: float) -> Vector2:
-	if vector.length_squared() > max_value * max_value:
-		vector = vector.normalized() * max_value
+	var length = vector.length()
+	if length > max_value:
+		vector = (vector / length) * max_value
 
 	return vector

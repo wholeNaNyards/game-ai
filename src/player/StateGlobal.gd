@@ -27,7 +27,9 @@ func execute_physics_process(player, _delta: float) -> void:
 	
 	if player.direction.x > 0:
 		player.get_animated_sprite().flip_h = false
+		player.dir = 1
 	elif player.direction.x < 0:
+		player.dir = -1
 		player.get_animated_sprite().flip_h = true
 
 	if player.direction == Vector2.ZERO:

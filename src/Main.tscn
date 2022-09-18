@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://src/ai/Prey.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/Rock.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/background.png" type="Texture" id=3]
 [ext_resource path="res://src/Main.gd" type="Script" id=4]
 [ext_resource path="res://src/player/Player.tscn" type="PackedScene" id=5]
-[ext_resource path="res://src/ai/Predator.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 984, 12 )
@@ -23,27 +22,37 @@ texture = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 5 )]
 position = Vector2( 90, -227 )
+max_speed = 100
+speed = 200
 
 [node name="Prey" parent="." instance=ExtResource( 1 )]
 position = Vector2( 280, 77 )
-
-[node name="Prey5" parent="." instance=ExtResource( 1 )]
-position = Vector2( 776, -107 )
-
-[node name="Prey6" parent="." instance=ExtResource( 1 )]
-position = Vector2( 664, 237 )
+offset = 10.0
 
 [node name="Prey2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 600, 557 )
+position = Vector2( 648, 85 )
+initial_leader = NodePath("../Prey")
+offset = 10.0
 
 [node name="Prey3" parent="." instance=ExtResource( 1 )]
-position = Vector2( -216, 445 )
+position = Vector2( 624, 483 )
+initial_leader = NodePath("../Prey")
+offset = 10.0
 
 [node name="Prey4" parent="." instance=ExtResource( 1 )]
-position = Vector2( -608, -123 )
+position = Vector2( 146, 357 )
+initial_leader = NodePath("../Prey")
+offset = 10.0
 
-[node name="Predator" parent="." instance=ExtResource( 6 )]
-position = Vector2( -216, 85 )
+[node name="Prey5" parent="." instance=ExtResource( 1 )]
+position = Vector2( -192, 149 )
+initial_leader = NodePath("../Prey")
+offset = 10.0
+
+[node name="Prey6" parent="." instance=ExtResource( 1 )]
+position = Vector2( -512, -115 )
+initial_leader = NodePath("../Prey")
+offset = 10.0
 
 [node name="Rocks" type="Node2D" parent="."]
 

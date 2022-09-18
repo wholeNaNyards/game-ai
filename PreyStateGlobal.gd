@@ -15,12 +15,13 @@ func execute_process(_prey, _delta: float) -> void:
 
 func execute_physics_process(prey, _delta: float) -> void:
 	#	animated_sprite.rotation = velocity.angle()
-	var currently_steering = false
 
 	if prey.velocity.x >= 0:
 		prey.animated_sprite.flip_h = false
 	else:
 		prey.animated_sprite.flip_h = true
+
+	var currently_steering = false
 
 	if Input.is_action_pressed("left_click"):
 		var mouse_pos = prey.get_global_mouse_position()
@@ -29,7 +30,7 @@ func execute_physics_process(prey, _delta: float) -> void:
 		prey.change_state("SEEKING")
 
 	if prey.leader:
-		prey.steering_manager.offset_pursuit(prey.leader, prey.offset)
+		prey.steering_manager.offset_pursuit(prey.leader, prey.offset, "prey")
 		currently_steering = true
 		prey.change_state("FOLLOWING")
 

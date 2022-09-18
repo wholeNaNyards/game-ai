@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/player/Player.gd"
 }, {
+"base": "AI",
+"class": "Predator",
+"language": "GDScript",
+"path": "res://src/ai/Predator.gd"
+}, {
 "base": "State",
 "class": "PredatorStateChasing",
 "language": "GDScript",
@@ -43,6 +48,11 @@ _global_script_classes=[ {
 "class": "PredatorStateResting",
 "language": "GDScript",
 "path": "res://PredatorStateResting.gd"
+}, {
+"base": "AI",
+"class": "Prey",
+"language": "GDScript",
+"path": "res://src/ai/Prey.gd"
 }, {
 "base": "State",
 "class": "PreyStateFleeing",
@@ -108,10 +118,12 @@ _global_script_class_icons={
 "AI": "",
 "MovingEntity": "",
 "Player": "",
+"Predator": "",
 "PredatorStateChasing": "",
 "PredatorStateGlobal": "",
 "PredatorStateHunting": "",
 "PredatorStateResting": "",
+"Prey": "",
 "PreyStateFleeing": "",
 "PreyStateFollowing": "",
 "PreyStateGlobal": "",

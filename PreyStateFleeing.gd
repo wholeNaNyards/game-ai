@@ -21,5 +21,5 @@ func execute_unhandled_input(_prey, _event: InputEvent) -> void:
 func execute_process(_prey, _delta: float) -> void:
 	pass
 
-func execute_physics_process(prey, _delta: float) -> void:
+func execute_physics_process(_prey, _delta: float) -> void:
 	pass

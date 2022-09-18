@@ -8,6 +8,7 @@ export (float, 0.1, 20.0) var mass = 1.0
 export (float, 10.0, 100000) var max_force = 50000.0
 
 var velocity = Vector2()
+var dir = 1
 
 func get_velocity() -> Vector2:
 	return velocity
