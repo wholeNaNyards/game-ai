@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Stone3.png-e505b6922b92e6e63c3b54920cddf0e4.stex"
+path="res://.import/standing_mirrored.png-0b5408226eeb9ebfc1ffa36f836f6889.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/rocks/Stone3.png"
-dest_files=[ "res://.import/Stone3.png-e505b6922b92e6e63c3b54920cddf0e4.stex" ]
+source_file="res://assets/player/standing_mirrored.png"
+dest_files=[ "res://.import/standing_mirrored.png-0b5408226eeb9ebfc1ffa36f836f6889.stex" ]
 
 [params]
 

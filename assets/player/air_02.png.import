@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Stone3.png-e505b6922b92e6e63c3b54920cddf0e4.stex"
+path="res://.import/air_02.png-056ef23e906fd094f7077aa8045cb880.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/rocks/Stone3.png"
-dest_files=[ "res://.import/Stone3.png-e505b6922b92e6e63c3b54920cddf0e4.stex" ]
+source_file="res://assets/player/air_02.png"
+dest_files=[ "res://.import/air_02.png-056ef23e906fd094f7077aa8045cb880.stex" ]
 
 [params]
 
