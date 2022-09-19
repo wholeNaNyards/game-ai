@@ -6,7 +6,7 @@ func enter(player) -> void:
 	player.get_animated_sprite().play("walking")
 
 func exit(_player) -> void:
-	pass
+	queue_free()
 
 func execute_unhandled_input(_player, _event: InputEvent) -> void:
 	pass

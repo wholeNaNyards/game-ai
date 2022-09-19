@@ -28,6 +28,7 @@ func _on_Timer_timeout(player) -> void:
 
 func exit(_player) -> void:
 	timer.queue_free()
+	queue_free()
 
 func execute_unhandled_input(_player, _event: InputEvent) -> void:
 	pass

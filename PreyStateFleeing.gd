@@ -14,6 +14,7 @@ func enter(prey) -> void:
 
 func exit(_prey) -> void:
 	animated_sprite.modulate = previous_modulate
+	queue_free()
 
 func execute_unhandled_input(_prey, _event: InputEvent) -> void:
 	pass

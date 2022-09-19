@@ -6,7 +6,7 @@ func enter(predator) -> void:
 	predator.get_animated_sprite().play("walking")
 
 func exit(_predator) -> void:
-	pass
+	queue_free()
 
 func execute_unhandled_input(_predator, _event: InputEvent) -> void:
 	pass
