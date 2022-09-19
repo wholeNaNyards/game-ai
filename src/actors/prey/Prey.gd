@@ -25,8 +25,8 @@ func _ready() -> void:
 		path_points = get_node(path_follow).curve.get_baked_points()
 
 	state_machine.set_global_state(PreyStateGlobal.new())
-	change_state("WANDERING")
-	add_to_group("prey")
+	change_state("FOLLOWING")
+	add_to_group(group)
 
 func change_state(new_state: String) -> void:
 	if new_state == "WANDERING":

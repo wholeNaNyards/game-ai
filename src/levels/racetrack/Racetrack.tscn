@@ -97,6 +97,8 @@ modulate = Color( 0, 0, 0, 1 )
 position = Vector2( -618, -161 )
 max_speed = 300
 speed = 600
+group = "prey"
+separation = true
 path_follow = NodePath("../Path2D")
 
 [node name="Prey3" parent="." instance=ExtResource( 3 )]
@@ -104,6 +106,8 @@ modulate = Color( 0, 0, 1, 1 )
 position = Vector2( -578, -111 )
 max_speed = 350
 speed = 700
+group = "prey"
+separation = true
 path_follow = NodePath("../Path2D")
 
 [node name="Prey2" parent="." instance=ExtResource( 3 )]
@@ -111,6 +115,8 @@ modulate = Color( 0, 1, 0, 1 )
 position = Vector2( -662, -217 )
 max_speed = 300
 speed = 600
+group = "prey"
+separation = true
 path_follow = NodePath("../Path2D")
 
 [node name="Prey4" parent="." instance=ExtResource( 3 )]
@@ -118,6 +124,8 @@ modulate = Color( 0, 1, 1, 1 )
 position = Vector2( -679, -78 )
 max_speed = 300
 speed = 550
+group = "prey"
+separation = true
 path_follow = NodePath("../Path2D")
 
 [node name="Prey5" parent="." instance=ExtResource( 3 )]
@@ -125,6 +133,8 @@ modulate = Color( 1, 0, 0, 1 )
 position = Vector2( -639, -28 )
 max_speed = 400
 speed = 750
+group = "prey"
+separation = true
 path_follow = NodePath("../Path2D")
 
 [node name="Prey6" parent="." instance=ExtResource( 3 )]
@@ -132,6 +142,8 @@ modulate = Color( 1, 1, 0, 1 )
 position = Vector2( -723, -134 )
 max_speed = 300
 speed = 600
+group = "prey"
+separation = true
 path_follow = NodePath("../Path2D")
 
 [node name="Player" parent="." instance=ExtResource( 4 )]

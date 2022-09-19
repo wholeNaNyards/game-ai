@@ -4,9 +4,13 @@ extends MovingEntity
 onready var steering_manager = $SteeringManager as SteeringManager
 
 # Wander Behavior
+export var wander = false
 export (int, 1, 1000) var wander_distance = 1
 export (int, 1, 1000) var wander_radius = 250
 export (float, 0.1, 100) var wander_angle_change: float = 2
+
+# Flocking Behaviors
+export var separation = false
 
 # Obstacle Avoidance
 export var obstacle_avoidance = true
@@ -29,6 +33,12 @@ func _physics_process(delta: float) -> void:
 
 	if wall_avoidance:
 		steering_manager.wall_avoidance(wall_avoidance_rays)
+
+	if wander:
+		steering_manager.wander(wander_distance, wander_radius, wander_angle_change)
+
+	if separation:
+		steering_manager.separation(group)
 
 	var new_velocity = steering_manager.calculate(delta)
 	velocity = move_and_slide(new_velocity)
