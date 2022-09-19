@@ -22,6 +22,10 @@ export var wall_avoidance = true
 export var wall_avoidance_length = 150.0
 onready var wall_avoidance_rays : Node2D = $WallAvoidanceRays
 
+# Leader Following
+var heading = Vector2.RIGHT
+var side = Vector2.UP
+
 func _ready() -> void:
 	for raycast in wall_avoidance_rays.get_children():
 		raycast = raycast as RayCast2D
@@ -39,6 +43,16 @@ func _physics_process(delta: float) -> void:
 
 	if separation:
 		steering_manager.separation(group)
+	
+	if not velocity.is_equal_approx(Vector2.ZERO):
+		heading = velocity.normalized()
+		side = velocity.tangent().normalized()
 
 	var new_velocity = steering_manager.calculate(delta)
 	velocity = move_and_slide(new_velocity)
+
+func get_heading() -> Vector2:
+	return heading
+
+func get_side() -> Vector2:
+	return side

@@ -29,7 +29,7 @@ func execute_physics_process(prey, _delta: float) -> void:
 		prey.change_state("FOLLOWING")
 
 	if prey.leader:
-		prey.steering_manager.offset_pursuit(prey.leader, prey.offset, "prey")
+		prey.steering_manager.leader_following(prey.leader, prey.offset)
 		prey.change_state("FOLLOWING")
 
 	if prey.interpose_target_1 and prey.interpose_target_2:

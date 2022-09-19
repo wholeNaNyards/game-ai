@@ -8,6 +8,9 @@ var separation_radius: float = 150.0
 var max_separation = 500.0
 var path_follow_index = 0
 
+# Leader Following
+var leader_sight_radius = 50.0
+
 # DEBUG Options
 #export (bool) var enable_debug = true
 #var desired_velocity : Vector2
@@ -75,8 +78,8 @@ func separation(group: String) -> void:
 func interpose(target_1: MovingEntity, target_2: MovingEntity) -> void:
 	_do_interpose(target_1, target_2)
 
-func offset_pursuit(leader: MovingEntity, offset: float, group: String) -> void:
-	_do_offset_pursuit(leader, offset, group)
+func leader_following(leader: MovingEntity, offset: Vector2) -> void:
+	_do_leader_following(leader, offset)
 
 func _do_seek(target_position : Vector2, slowing_radius : float = 250.0) -> void:
 	var desired_direction = target_position - host.get_position()
@@ -135,7 +138,7 @@ func _do_evade(pursuer: MovingEntity) -> void:
 
 func _do_path_follow(path_points: PoolVector2Array) -> void:
 	var target_position = path_points[path_follow_index]
-	if host.get_position().distance_to(target_position) < 100:
+	if host.get_position().distance_to(target_position) < 50:
 		path_follow_index = wrapi(path_follow_index + 1, 0, path_points.size())
 		target_position = path_points[path_follow_index]
 
@@ -186,25 +189,20 @@ func _do_wall_avoidance(raycasts: Node2D) -> void:
 		# Create a force of overshoot magnitude in the direction of wall normal
 		apply_force(closest_intersecting_ray.get_collision_normal() * overshoot.length())
 
-func _do_offset_pursuit(leader: MovingEntity, offset: float, group: String) -> void:
-	var leader_sight_radius = 50.0
+func _do_leader_following(leader: MovingEntity, offset: Vector2) -> void:
+	# Calculate offset in global coordinates
+	var heading_offset: Vector2 = leader.get_heading() * offset.y
+	var side_offset: Vector2 = leader.get_side() * offset.x * -1
+	var global_offset: Vector2 = heading_offset + side_offset + leader.get_position()
 
-	var tv = leader.get_velocity().normalized() * offset
-	var leader_position = leader.get_position()
+#	var global_offset = host.get_position() + heading_offset + side_offset
 
-	var ahead: Vector2 = leader_position + tv
-	tv *= -1
-	var behind: Vector2 = leader_position + tv
+#	var to_offset: Vector2 = global_offset - host.get_velocity()
 
-	var host_position = host.get_position()
-	var in_leader_way = host_position.distance_to(leader_position) <= leader_sight_radius
-	var in_leader_future_way = host_position.distance_to(ahead) <= leader_sight_radius
+#	var look_ahead_time: float = to_offset.length() / (host.get_max_speed() + leader.get_speed())
 
-	if in_leader_way or in_leader_future_way:
-		_do_evade(leader)
-
-	_do_seek(behind + leader.get_position())
-	_do_separation(group)
+#	var new_position: Vector2 = global_offset + leader.get_velocity() * look_ahead_time
+	_do_seek(global_offset, 50.0)
 
 func _do_separation(group : String) -> void:
 	var force: Vector2 = Vector2()

@@ -11,7 +11,7 @@ var predator : AI
 # Leader Following
 export var initial_leader := NodePath()
 var leader: MovingEntity
-export var offset : float = 10
+export var offset : Vector2 = Vector2(-10, -10)
 
 # Path Following
 export var path_follow := NodePath()
@@ -36,7 +36,8 @@ func _ready() -> void:
 
 	state_machine.set_global_state(PreyStateGlobal.new())
 	change_state("FOLLOWING")
-	add_to_group(group)
+	if group:
+		add_to_group(group)
 
 func change_state(new_state: String) -> void:
 	if new_state == "WANDERING":

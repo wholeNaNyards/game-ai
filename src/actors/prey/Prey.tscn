@@ -14,12 +14,13 @@ radius = 184.567
 
 [node name="Prey" instance=ExtResource( 1 )]
 position = Vector2( 1, 0 )
-collision_layer = 4
 collision_mask = 61
 script = ExtResource( 2 )
 initial_leader = NodePath("")
 offset = 10.0
 path_follow = NodePath("")
+initial_interpose_target_1 = NodePath("")
+initial_interpose_target_2 = NodePath("")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
 visible = false
@@ -64,7 +65,6 @@ collision_mask = 16
 
 [node name="StateMachine" parent="." index="5" instance=ExtResource( 4 )]
 position = Vector2( -1, 32 )
-show_label = true
 
 [node name="PredatorDetectorRaycasts" type="Node2D" parent="." index="6"]
 visible = false

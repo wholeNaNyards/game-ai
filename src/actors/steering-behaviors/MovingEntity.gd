@@ -9,7 +9,6 @@ export (float, 10.0, 100000) var max_force = 50000.0
 export (String) var group
 
 var velocity = Vector2()
-var dir = 1
 
 func get_velocity() -> Vector2:
 	return velocity

@@ -61,17 +61,18 @@ current = true
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( -319, 334 )
+group = "player"
 
 [node name="Prey" parent="." instance=ExtResource( 1 )]
 position = Vector2( -414, -20 )
 group = "prey"
 wander = true
-initial_interpose_target_1 = NodePath("")
-initial_interpose_target_2 = NodePath("")
+offset = Vector2( -10, -10 )
 
 [node name="Interposer" parent="." instance=ExtResource( 1 )]
 modulate = Color( 1, 0, 0, 1 )
 position = Vector2( 293, 348 )
 group = "prey"
+offset = Vector2( -10, -10 )
 initial_interpose_target_1 = NodePath("../Player")
 initial_interpose_target_2 = NodePath("../Prey")
