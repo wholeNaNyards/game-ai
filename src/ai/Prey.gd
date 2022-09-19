@@ -13,9 +13,17 @@ export var initial_leader := NodePath()
 var leader: MovingEntity
 export var offset : float = 10
 
+# Path Following
+export var path_follow := NodePath()
+var path_points: PoolVector2Array
+
 func _ready() -> void:
 	if initial_leader:
 		leader = get_node(initial_leader)
+
+	if path_follow:
+		path_points = get_node(path_follow).curve.get_baked_points()
+
 	state_machine.set_global_state(PreyStateGlobal.new())
 	change_state("WANDERING")
 	add_to_group("prey")

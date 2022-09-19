@@ -29,6 +29,11 @@ func execute_physics_process(prey, _delta: float) -> void:
 		currently_steering = true
 		prey.change_state("SEEKING")
 
+	if prey.path_points:
+		prey.steering_manager.path_follow(prey.path_points)
+		currently_steering = true
+		prey.change_state("FOLLOWING")
+
 	if prey.leader:
 		prey.steering_manager.offset_pursuit(prey.leader, prey.offset, "prey")
 		currently_steering = true
@@ -39,6 +44,6 @@ func execute_physics_process(prey, _delta: float) -> void:
 		currently_steering = true
 		prey.change_state("FLEEING")
 
-	prey.steering_manager.wander(prey.wander_distance, prey.wander_radius, prey.wander_angle_change)
+#	prey.steering_manager.wander(prey.wander_distance, prey.wander_radius, prey.wander_angle_change)
 	if not currently_steering:
 		prey.change_state("WANDERING")

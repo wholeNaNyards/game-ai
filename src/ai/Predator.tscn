@@ -78,5 +78,7 @@ enabled = true
 cast_to = Vector2( 320, 0 )
 collision_mask = 21
 
+[node name="WallAvoidanceRays" type="Node2D" parent="." index="7"]
+
 [connection signal="body_entered" from="PreyDetector" to="." method="_on_PreyDetector_body_entered"]
 [connection signal="body_exited" from="PreyDetector" to="." method="_on_PreyDetector_body_exited"]
