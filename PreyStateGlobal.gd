@@ -22,12 +22,12 @@ func execute_physics_process(prey, _delta: float) -> void:
 		prey.animated_sprite.flip_h = true
 
 	var currently_steering = false
-
-	if Input.is_action_pressed("left_click"):
-		var mouse_pos = prey.get_global_mouse_position()
-		prey.steering_manager.seek(mouse_pos)
-		currently_steering = true
-		prey.change_state("SEEKING")
+#
+#	if Input.is_action_pressed("left_click"):
+#		var mouse_pos = prey.get_global_mouse_position()
+#		prey.steering_manager.seek(mouse_pos)
+#		currently_steering = true
+#		prey.change_state("SEEKING")
 
 	if prey.path_points:
 		prey.steering_manager.path_follow(prey.path_points)

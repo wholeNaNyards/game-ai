@@ -22,9 +22,11 @@ offset = 10.0
 path_follow = NodePath("")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
+visible = false
 shape = SubResource( 2 )
 
 [node name="PredatorDetector" type="Area2D" parent="." index="2"]
+visible = false
 position = Vector2( 0, 32 )
 collision_layer = 0
 collision_mask = 8
@@ -41,6 +43,7 @@ frames = ExtResource( 3 )
 animation = "walking"
 
 [node name="Raycasts" type="Node2D" parent="." index="4"]
+visible = false
 
 [node name="RayCast2D" type="RayCast2D" parent="Raycasts" index="0"]
 enabled = true
@@ -61,9 +64,9 @@ collision_mask = 16
 
 [node name="StateMachine" parent="." index="5" instance=ExtResource( 4 )]
 position = Vector2( -1, 32 )
-show_label = true
 
 [node name="PredatorDetectorRaycasts" type="Node2D" parent="." index="6"]
+visible = false
 
 [node name="RayCast2D" type="RayCast2D" parent="PredatorDetectorRaycasts" index="0"]
 enabled = true
@@ -83,6 +86,7 @@ cast_to = Vector2( 231, 0 )
 collision_mask = 25
 
 [node name="WallAvoidanceRays" type="Node2D" parent="." index="7"]
+visible = false
 
 [node name="RayCast2D" type="RayCast2D" parent="WallAvoidanceRays" index="0"]
 enabled = true

@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/ai/Prey.tscn" type="PackedScene" id=1]
-[ext_resource path="res://src/Rock.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/background.png" type="Texture" id=3]
+[ext_resource path="res://assets/Racetrack.png" type="Texture" id=3]
 [ext_resource path="res://src/Main.gd" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -13,7 +12,7 @@ extents = Vector2( 16, 560 )
 
 [sub_resource type="Curve2D" id=3]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, -330, -290, 0, 0, 0, 0, -180, -311, 0, 0, 0, 0, 65, -142, 0, 0, 0, 0, 288, -47, 0, 0, 0, 0, 526, 228, 0, 0, 0, 0, 1003, 210, 0, 0, 0, 0, 1003, 513, 0, 0, 0, 0, 805, 665, 0, 0, 0, 0, 652, 659, 0, 0, 0, 0, -63, 326, 0, 0, 0, 0, -339, 606, 0, 0, 0, 0, -566, 675, 0, 0, 0, 0, -710, 617, 0, 0, 0, 0, -747, 167, 0, 0, 0, 0, -601, -281, 0, 0, 0, 0, -330, -290 )
+"points": PoolVector2Array( 0, 0, 0, 0, -314, -230, 0, 0, 0, 0, -183, -232, -135.057, 15.5564, 135.057, -15.5564, 98, -185, 0, 0, 0, 0, 346, -216, -76.3675, -59.397, 76.3675, 59.397, 783, -201, -26.163, -125.865, 26.163, 125.865, 924, 24, 0, 0, 0, 0, 939, 284, 0, 0, 0, 0, 867, 450, 100.409, -47.3762, -100.409, 47.3762, 745, 554, 140.007, 7.07107, -140.007, -7.07107, 473, 596, 199.404, 23.3345, -199.404, -23.3345, 152, 459, 95.4594, -82.7315, -95.4594, 82.7315, -239, 568, 0, 0, 0, 0, -463, 634, 0, 0, 0, 0, -611, 603, 0, 0, 0, 0, -691, 525, 0, 0, 0, 0, -755, 350, 0, 0, 0, 0, -759, 173, -31.1127, 68.5894, 31.1127, -68.5894, -716, -60, -79.9153, 31.7254, 79.9153, -31.7254, -617, -223, 0, 0, 0, 0, -475, -251, 0, 0, 0, 0, -386, -243, 0, 0, 0, 0, -314, -230 )
 }
 
 [node name="Main" type="Node2D"]
@@ -21,8 +20,8 @@ position = Vector2( 0, 3 )
 script = ExtResource( 4 )
 
 [node name="Background" type="Sprite" parent="."]
-visible = false
 position = Vector2( 120, 173 )
+rotation = 4.71239
 texture = ExtResource( 3 )
 
 [node name="Walls" type="Node2D" parent="."]
@@ -69,56 +68,67 @@ anchor_mode = 0
 current = true
 
 [node name="Racetrack" type="StaticBody2D" parent="."]
+visible = false
 position = Vector2( -425, -97 )
 collision_layer = 32
 collision_mask = 0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Racetrack"]
+position = Vector2( -24, -356 )
 build_mode = 1
-polygon = PoolVector2Array( -164, -105, 195, -158, 427, 26, 612, 103, 448, 358, 210, 179, 187, 507, 49, 608, -173, 680, -259, 262 )
-
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Racetrack"]
-position = Vector2( 630, 371 )
-build_mode = 1
-polygon = PoolVector2Array( -379, -701, 694, -699, 979, -687, 987, -198, 394, -111, 230, -380 )
-
-[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Racetrack"]
-position = Vector2( 778, 530 )
-build_mode = 1
-polygon = PoolVector2Array( -182, -431, 117, -132, 566, -157, 550, 26, 353, 151, 163, 65, -346, -198 )
+polygon = PoolVector2Array( -389, 371, -318, 252, -236, 178, -182, 147, -79, 126, 14, 116, 69, 118, 174, 142, 413, 175, 531, 179, 610, 183, 799, 136, 1002, 118, 1134, 130, 1225, 156, 1323, 223, 1447, 384, 1490, 538, 1495, 693, 1457, 856, 1337, 1010, 1251, 1084, 1094, 1140, 961, 1150, 858, 1141, 735, 1079, 667, 1040, 598, 1027, 502, 1044, 107, 1163, 1526, 1160, 1530, 88, -391, 83 )
 
 [node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="Racetrack"]
-position = Vector2( 468, 625 )
+position = Vector2( 516, 270 )
 build_mode = 1
-polygon = PoolVector2Array( -105, -122, -27, -96, 96, 9, 429, 108, 584, 255, -441, 247 )
+polygon = PoolVector2Array( -930, 163, -907, 294, -879, 377, -816, 459, -744, 510, -643, 534, -932, 537 )
+
+[node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="Racetrack"]
+position = Vector2( 1336, -85 )
+build_mode = 1
+polygon = PoolVector2Array( -1604, 556, -1497, 443, -1624, 408, -1498, 376, -1547, 254, -1425, 291, -1413, 183, -1341, 244, -1232, 180, -1225, 326, -1164, 251, -1075, 247, -852, 183, -795, 156, -755, 130, -718, 94, -676, 69, -621, 72, -605, 112, -560, 82, -419, 101, -398, 91, -424, 11, -376, 18, -323, 45, -284, 85, -206, 8, -187, 19, -175, 148, -123, 118, -109, 127, -137, 259, -132, 273, -51, 271, -44, 289, -132, 392, -133, 405, -74, 444, -63, 473, -77, 493, -168, 521, -211, 538, -179, 575, -154, 641, -167, 642, -200, 619, -274, 588, -286, 595, -334, 667, -366, 695, -380, 690, -369, 601, -398, 615, -495, 624, -492, 601, -438, 545, -493, 511, -566, 483, -559, 466, -488, 442, -521, 429, -581, 420, -639, 425, -702, 435, -736, 428, -801, 425, -921, 442, -1038, 474, -1143, 503, -1079, 557, -1086, 570, -1178, 590, -1195, 672, -1225, 645, -1288, 611, -1300, 650, -1354, 702, -1399, 593, -1435, 614, -1517, 624, -1474, 552 )
 
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource( 3 )
 
 [node name="Prey" parent="." instance=ExtResource( 1 )]
-modulate = Color( 0.407843, 0.203922, 1, 1 )
-position = Vector2( -762, -167 )
-path_follow = NodePath("../Path2D")
-
-[node name="Prey3" parent="." instance=ExtResource( 1 )]
-modulate = Color( 1, 0.886275, 0.12549, 1 )
-position = Vector2( -747, -151 )
-max_speed = 400
-speed = 750
-path_follow = NodePath("../Path2D")
-
-[node name="Prey2" parent="." instance=ExtResource( 1 )]
-modulate = Color( 0.333333, 0.607843, 0.854902, 1 )
-position = Vector2( -796, -244 )
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( -618, -161 )
 max_speed = 300
 speed = 600
 path_follow = NodePath("../Path2D")
 
-[node name="Rock" parent="." instance=ExtResource( 2 )]
-position = Vector2( -716, 545 )
+[node name="Prey3" parent="." instance=ExtResource( 1 )]
+modulate = Color( 0, 0, 1, 1 )
+position = Vector2( -578, -111 )
+max_speed = 350
+speed = 700
+path_follow = NodePath("../Path2D")
 
-[node name="Rock3" parent="." instance=ExtResource( 2 )]
-position = Vector2( -172, -225 )
+[node name="Prey2" parent="." instance=ExtResource( 1 )]
+modulate = Color( 0, 1, 0, 1 )
+position = Vector2( -662, -217 )
+max_speed = 300
+speed = 600
+path_follow = NodePath("../Path2D")
 
-[node name="Rock4" parent="." instance=ExtResource( 2 )]
-position = Vector2( 52, -132 )
+[node name="Prey4" parent="." instance=ExtResource( 1 )]
+modulate = Color( 0, 1, 1, 1 )
+position = Vector2( -679, -78 )
+max_speed = 300
+speed = 550
+path_follow = NodePath("../Path2D")
+
+[node name="Prey5" parent="." instance=ExtResource( 1 )]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( -639, -28 )
+max_speed = 400
+speed = 750
+path_follow = NodePath("../Path2D")
+
+[node name="Prey6" parent="." instance=ExtResource( 1 )]
+modulate = Color( 1, 1, 0, 1 )
+position = Vector2( -723, -134 )
+max_speed = 300
+speed = 600
+path_follow = NodePath("../Path2D")
