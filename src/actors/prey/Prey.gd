@@ -17,12 +17,22 @@ export var offset : float = 10
 export var path_follow := NodePath()
 var path_points: PoolVector2Array
 
+# Interpose
+export var initial_interpose_target_1 := NodePath()
+var interpose_target_1: MovingEntity
+export var initial_interpose_target_2 := NodePath()
+var interpose_target_2: MovingEntity
+
 func _ready() -> void:
 	if initial_leader:
 		leader = get_node(initial_leader)
 
 	if path_follow:
 		path_points = get_node(path_follow).curve.get_baked_points()
+	
+	if initial_interpose_target_1 and initial_interpose_target_2:
+		interpose_target_1 = get_node(initial_interpose_target_1)
+		interpose_target_2 = get_node(initial_interpose_target_2)
 
 	state_machine.set_global_state(PreyStateGlobal.new())
 	change_state("FOLLOWING")

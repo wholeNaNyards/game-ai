@@ -72,6 +72,9 @@ func wall_avoidance(raycasts: Node2D) -> void:
 func separation(group: String) -> void:
 	_do_separation(group)
 
+func interpose(target_1: MovingEntity, target_2: MovingEntity) -> void:
+	_do_interpose(target_1, target_2)
+
 func offset_pursuit(leader: MovingEntity, offset: float, group: String) -> void:
 	_do_offset_pursuit(leader, offset, group)
 
@@ -222,6 +225,20 @@ func _do_separation(group : String) -> void:
 		force = force.normalized() * max_separation
 
 	apply_force(force)
+
+func _do_interpose(target_1: MovingEntity, target_2: MovingEntity) -> void:
+	var target_1_position = target_1.get_position()
+	var target_2_position = target_2.get_position()
+	
+	var mid_point: Vector2 = (target_1_position + target_2_position) / 2.0
+	var time_to_reach_mid_point = host.get_position().distance_to(mid_point) / host.get_max_speed()
+
+	var target_1_future_position: Vector2 = target_1_position + target_1.get_velocity() * time_to_reach_mid_point
+	var target_2_future_position: Vector2 = target_2_position + target_2.get_velocity() * time_to_reach_mid_point
+
+	var future_mid_point: Vector2 = (target_1_future_position + target_2_future_position) / 2.0
+
+	_do_seek(future_mid_point, 0.0)
 
 func limit(vector: Vector2, max_value: float) -> Vector2:
 	var length = vector.length()
