@@ -69,7 +69,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/actors/predator/fsm/PredatorStateResting.gd"
 }, {
-"base": "Reference",
+"base": "AI",
 "class": "Prey",
 "language": "GDScript",
 "path": "res://src/actors/prey/Prey.gd"
@@ -140,7 +140,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="finite-state-machine"
+config/name="game-ai"
 run/main_scene="res://src/levels/racetrack/Racetrack.tscn"
 
 [display]
