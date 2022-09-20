@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/walk_01.png-76437878f671437b4fb440fe8a54bf49.stex"
+path="res://.import/Dog_Run-2a.png-f301b9ba631ff12bbbf27b27fabffd65.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/walk_01.png"
-dest_files=[ "res://.import/walk_01.png-76437878f671437b4fb440fe8a54bf49.stex" ]
+source_file="res://assets/player/dog/Dog_Run-2a.png"
+dest_files=[ "res://.import/Dog_Run-2a.png-f301b9ba631ff12bbbf27b27fabffd65.stex" ]
 
 [params]
 

@@ -10,6 +10,8 @@ export (int, 1, 1000) var wander_radius = 250
 export (float, 0.1, 100) var wander_angle_change: float = 2
 
 # Flocking Behaviors
+export var alignment = false
+export var cohesion = false
 export var separation = false
 
 # Obstacle Avoidance
@@ -40,6 +42,12 @@ func _physics_process(delta: float) -> void:
 
 	if wander:
 		steering_manager.wander(wander_distance, wander_radius, wander_angle_change)
+
+	if alignment:
+		steering_manager.alignment(group)
+
+	if cohesion:
+		steering_manager.cohesion(group)
 
 	if separation:
 		steering_manager.separation(group)

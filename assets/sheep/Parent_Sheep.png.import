@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/air_01.png-b6601a34945ffd101186e22a3af972fc.stex"
+path="res://.import/Parent_Sheep.png-b442501f4230619f8633b356c9508177.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/air_01.png"
-dest_files=[ "res://.import/air_01.png-b6601a34945ffd101186e22a3af972fc.stex" ]
+source_file="res://assets/sheep/Parent_Sheep.png"
+dest_files=[ "res://.import/Parent_Sheep.png-b442501f4230619f8633b356c9508177.stex" ]
 
 [params]
 

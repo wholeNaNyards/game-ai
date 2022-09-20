@@ -61,38 +61,98 @@ current = true
 
 [node name="Prey" parent="." instance=ExtResource( 2 )]
 position = Vector2( -414, -20 )
+max_speed = null
+speed = null
+mass = null
+max_force = null
 group = "prey"
 wander = true
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Prey2" parent="." instance=ExtResource( 2 )]
 position = Vector2( -285, 491 )
+max_speed = null
+speed = null
+mass = null
+max_force = null
 group = "prey"
 wander = true
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Prey3" parent="." instance=ExtResource( 2 )]
 position = Vector2( 182, 318 )
+max_speed = null
+speed = null
+mass = null
+max_force = null
 group = "prey"
 wander = true
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Prey4" parent="." instance=ExtResource( 2 )]
 position = Vector2( 740, 552 )
+max_speed = null
+speed = null
+mass = null
+max_force = null
 group = "prey"
 wander = true
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Prey5" parent="." instance=ExtResource( 2 )]
 position = Vector2( 596, 96 )
+max_speed = null
+speed = null
+mass = null
+max_force = null
 group = "prey"
 wander = true
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Predator" parent="." instance=ExtResource( 3 )]
 position = Vector2( 135, 108 )

@@ -10,6 +10,8 @@ var direction : Vector2
 
 func _ready() -> void:
 	direction = Vector2()
+	if group:
+		add_to_group(group)
 	state_machine.set_global_state(PlayerStateGlobal.new())
 	change_state("STANDING")
 

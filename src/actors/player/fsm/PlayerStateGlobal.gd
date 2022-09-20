@@ -26,9 +26,9 @@ func execute_physics_process(player, _delta: float) -> void:
 		player.direction += Vector2.DOWN
 	
 	if player.direction.x > 0:
-		player.get_animated_sprite().flip_h = false
-	elif player.direction.x < 0:
 		player.get_animated_sprite().flip_h = true
+	elif player.direction.x < 0:
+		player.get_animated_sprite().flip_h = false
 
 	if player.direction == Vector2.ZERO:
 		player.velocity = player.velocity.linear_interpolate(Vector2.ZERO, player.friction)

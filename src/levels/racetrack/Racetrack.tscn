@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/levels/racetrack/Racetrack.gd" type="Script" id=1]
 [ext_resource path="res://assets/Racetrack.png" type="Texture" id=2]
 [ext_resource path="res://src/actors/prey/Prey.tscn" type="PackedScene" id=3]
-[ext_resource path="res://src/actors/player/Player.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 984, 12 )
@@ -97,72 +96,117 @@ modulate = Color( 0, 0, 0, 1 )
 position = Vector2( -618, -161 )
 max_speed = 300
 speed = 600
+mass = null
+max_force = null
 group = "prey"
+wander = null
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
-path_follow = NodePath("../Path2D")
-initial_interpose_target_1 = NodePath("")
-initial_interpose_target_2 = NodePath("")
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Prey3" parent="." instance=ExtResource( 3 )]
 modulate = Color( 0, 0, 1, 1 )
 position = Vector2( -578, -111 )
 max_speed = 350
 speed = 700
+mass = null
+max_force = null
 group = "prey"
+wander = null
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
-path_follow = NodePath("../Path2D")
-initial_interpose_target_1 = NodePath("")
-initial_interpose_target_2 = NodePath("")
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Prey2" parent="." instance=ExtResource( 3 )]
 modulate = Color( 0, 1, 0, 1 )
 position = Vector2( -662, -217 )
 max_speed = 300
 speed = 600
+mass = null
+max_force = null
 group = "prey"
+wander = null
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
-path_follow = NodePath("../Path2D")
-initial_interpose_target_1 = NodePath("")
-initial_interpose_target_2 = NodePath("")
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Prey4" parent="." instance=ExtResource( 3 )]
 modulate = Color( 0, 1, 1, 1 )
 position = Vector2( -679, -78 )
 max_speed = 300
 speed = 550
+mass = null
+max_force = null
 group = "prey"
+wander = null
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
-path_follow = NodePath("../Path2D")
-initial_interpose_target_1 = NodePath("")
-initial_interpose_target_2 = NodePath("")
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Prey5" parent="." instance=ExtResource( 3 )]
 modulate = Color( 1, 0, 0, 1 )
 position = Vector2( -639, -28 )
 max_speed = 400
 speed = 750
+mass = null
+max_force = null
 group = "prey"
+wander = null
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
-path_follow = NodePath("../Path2D")
-initial_interpose_target_1 = NodePath("")
-initial_interpose_target_2 = NodePath("")
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Prey6" parent="." instance=ExtResource( 3 )]
 modulate = Color( 1, 1, 0, 1 )
 position = Vector2( -723, -134 )
 max_speed = 300
 speed = 600
+mass = null
+max_force = null
 group = "prey"
+wander = null
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
 separation = true
-offset = Vector2( -10, -10 )
-path_follow = NodePath("../Path2D")
-initial_interpose_target_1 = NodePath("")
-initial_interpose_target_2 = NodePath("")
-
-[node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( -649, 629 )
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null

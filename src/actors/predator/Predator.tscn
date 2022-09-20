@@ -6,7 +6,7 @@
 [ext_resource path="res://src/utils/fsm/StateMachine.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 24.0
+radius = 72.0
 height = 16.0
 
 [sub_resource type="CircleShape2D" id=1]
@@ -34,7 +34,7 @@ position = Vector2( 0, -32 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="." index="3"]
-scale = Vector2( 0.5, 0.5 )
+scale = Vector2( 1.25, 1.25 )
 frames = ExtResource( 3 )
 animation = "walking"
 

@@ -4,8 +4,9 @@ extends Node2D
 onready var host: MovingEntity = owner
 var acceleration = Vector2()
 var wander_angle : float = 0.0
-var separation_radius: float = 150.0
-var max_separation = 500.0
+var flocking_distance: float = 1000.0
+var separation_force: float = 5000.0
+
 var path_follow_index = 0
 
 # Leader Following
@@ -71,6 +72,12 @@ func obstacle_avoidance(raycasts: Node2D, max_avoid_force: float) -> void:
 
 func wall_avoidance(raycasts: Node2D) -> void:
 	_do_wall_avoidance(raycasts)
+
+func alignment(group: String) -> void:
+	_do_alignment(group)
+
+func cohesion(group: String) -> void:
+	_do_cohesion(group)
 
 func separation(group: String) -> void:
 	_do_separation(group)
@@ -204,23 +211,47 @@ func _do_leader_following(leader: MovingEntity, offset: Vector2) -> void:
 #	var new_position: Vector2 = global_offset + leader.get_velocity() * look_ahead_time
 	_do_seek(global_offset, 50.0)
 
-func _do_separation(group : String) -> void:
-	var force: Vector2 = Vector2()
+func _do_alignment(group : String) -> void:
+	var force = Vector2()
 	var neighbor_count: float = 0.0
 
 	for entity in  get_tree().get_nodes_in_group(group):
-		var entity_position: Vector2 = entity.global_position
+		var entity_position: Vector2 = entity.get_position()
 		var host_position: Vector2 = host.get_position()
-		if entity != self and entity_position.distance_to(host_position) <= separation_radius:
-			force.x += entity_position.x - host_position.x
-			force.y += entity_position.y - host_position.y
+		if entity != host and entity_position.distance_to(host_position) <= flocking_distance:
+			force += entity.get_heading() * entity.get_velocity().length()
 			neighbor_count += 1
 
 	if neighbor_count != 0:
-		force.x /= neighbor_count
-		force.y /= neighbor_count
-		force *= -1
-		force = force.normalized() * max_separation
+		force /= float(neighbor_count)
+		force -= host.get_heading() * host.get_velocity().length()
+
+	apply_force(force)
+
+func _do_cohesion(group : String) -> void:
+	var center_of_mass = Vector2()
+	var neighbor_count: float = 0.0
+
+	for entity in  get_tree().get_nodes_in_group(group):
+		var entity_position: Vector2 = entity.get_position()
+		var host_position: Vector2 = host.get_position()
+		if entity != host and entity_position.distance_to(host_position) <= flocking_distance:
+			center_of_mass += entity_position
+			neighbor_count += 1
+
+	if neighbor_count != 0:
+		center_of_mass /= float(neighbor_count)
+		_do_seek(center_of_mass, 0.0)
+
+func _do_separation(group : String) -> void:
+	var force = Vector2()
+
+	for entity in  get_tree().get_nodes_in_group(group):
+		var entity_position: Vector2 = entity.get_position()
+		var host_position: Vector2 = host.get_position()
+		if entity != host and entity_position.distance_to(host_position) <= flocking_distance:
+			var to_entity: Vector2 = host_position - entity_position
+			force += (to_entity.normalized() / to_entity.length()) * separation_force
 
 	apply_force(force)
 

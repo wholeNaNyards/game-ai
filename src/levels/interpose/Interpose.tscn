@@ -65,14 +65,39 @@ group = "player"
 
 [node name="Prey" parent="." instance=ExtResource( 1 )]
 position = Vector2( -414, -20 )
+max_speed = null
+speed = null
+mass = null
+max_force = null
 group = "prey"
 wander = true
-offset = Vector2( -10, -10 )
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
+separation = null
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null
 
 [node name="Interposer" parent="." instance=ExtResource( 1 )]
 modulate = Color( 1, 0, 0, 1 )
 position = Vector2( 293, 348 )
+max_speed = null
+speed = null
+mass = null
+max_force = null
 group = "prey"
-offset = Vector2( -10, -10 )
-initial_interpose_target_1 = NodePath("../Player")
-initial_interpose_target_2 = NodePath("../Prey")
+wander = null
+wander_distance = null
+wander_radius = null
+wander_angle_change = null
+alignment = null
+cohesion = null
+separation = null
+obstacle_avoidance = null
+max_avoid_force = null
+wall_avoidance = null
+wall_avoidance_length = null

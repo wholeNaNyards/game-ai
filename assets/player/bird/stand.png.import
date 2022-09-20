@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/standing_mirrored.png-0b5408226eeb9ebfc1ffa36f836f6889.stex"
+path="res://.import/stand.png-9014315d58d84a1f2b96c661a1bfa248.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/standing_mirrored.png"
-dest_files=[ "res://.import/standing_mirrored.png-0b5408226eeb9ebfc1ffa36f836f6889.stex" ]
+source_file="res://assets/player/bird/stand.png"
+dest_files=[ "res://.import/stand.png-9014315d58d84a1f2b96c661a1bfa248.stex" ]
 
 [params]
 

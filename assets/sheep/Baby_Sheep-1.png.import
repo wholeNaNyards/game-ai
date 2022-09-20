@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/idle_01.png-1793917f8f028abd2c9939774ae1188b.stex"
+path="res://.import/Baby_Sheep-1.png-28666d3fb184a4b759a6a6c6844ba60f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/idle_01.png"
-dest_files=[ "res://.import/idle_01.png-1793917f8f028abd2c9939774ae1188b.stex" ]
+source_file="res://assets/sheep/Baby_Sheep-1.png"
+dest_files=[ "res://.import/Baby_Sheep-1.png-28666d3fb184a4b759a6a6c6844ba60f.stex" ]
 
 [params]
 
