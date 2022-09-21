@@ -105,11 +105,8 @@ wander_radius = null
 wander_angle_change = null
 alignment = null
 cohesion = null
-separation = true
 obstacle_avoidance = null
 max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
 
 [node name="Prey3" parent="." instance=ExtResource( 3 )]
 modulate = Color( 0, 0, 1, 1 )
@@ -125,11 +122,8 @@ wander_radius = null
 wander_angle_change = null
 alignment = null
 cohesion = null
-separation = true
 obstacle_avoidance = null
 max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
 
 [node name="Prey2" parent="." instance=ExtResource( 3 )]
 modulate = Color( 0, 1, 0, 1 )
@@ -145,11 +139,8 @@ wander_radius = null
 wander_angle_change = null
 alignment = null
 cohesion = null
-separation = true
 obstacle_avoidance = null
 max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
 
 [node name="Prey4" parent="." instance=ExtResource( 3 )]
 modulate = Color( 0, 1, 1, 1 )
@@ -165,11 +156,8 @@ wander_radius = null
 wander_angle_change = null
 alignment = null
 cohesion = null
-separation = true
 obstacle_avoidance = null
 max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
 
 [node name="Prey5" parent="." instance=ExtResource( 3 )]
 modulate = Color( 1, 0, 0, 1 )
@@ -185,11 +173,8 @@ wander_radius = null
 wander_angle_change = null
 alignment = null
 cohesion = null
-separation = true
 obstacle_avoidance = null
 max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
 
 [node name="Prey6" parent="." instance=ExtResource( 3 )]
 modulate = Color( 1, 1, 0, 1 )
@@ -205,8 +190,5 @@ wander_radius = null
 wander_angle_change = null
 alignment = null
 cohesion = null
-separation = true
 obstacle_avoidance = null
 max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
