@@ -22,13 +22,8 @@ extends Node2D
 #		elif behavior == "return":
 #			draw_line(Vector2.ZERO, start_pos, Color.black, 3.0)
 
-onready var host: MovingEntity = owner
-var acceleration = Vector2()
-var flocking_distance: float = 1000.0
-
-var path_follow_index = 0
-
 # Properties
+onready var host: MovingEntity = owner
 var steering_force: Vector2
 
 # Steering Behaviors
@@ -51,16 +46,16 @@ var flee_position: Vector2
 
 var separation: bool = false
 var separation_weight: float = 1.0
-var separation_group: String = ""
-var separation_force: float = 5000.0
+var separation_group: String
+var separation_force: float
 
 var alignment: bool = false
 var alignment_weight: float = 1.0
-var alignment_group: String = ""
+var alignment_group: String
 
 var cohesion: bool = false
 var cohesion_weight: float = 2.0
-var cohesion_group: String = ""
+var cohesion_group: String
 
 var seek: bool = false
 var seek_weight: float = 1.0
@@ -72,7 +67,7 @@ var wander_weight: float = 1.0
 var wander_distance: int
 var wander_radius: int
 var wander_angle_change: float
-var wander_angle : float = 0.0
+var wander_angle : float
 
 var pursuit: bool = false
 var pursuit_weight: float = 1.0
@@ -88,16 +83,15 @@ var interpose_weight: float = 1.0
 var interpose_target_1: MovingEntity
 var interpose_target_2: MovingEntity
 
-var follow_path: bool = false
+var path_follow: bool = false
+var path_follow_weight: float = 0.05
+var path_follow_points: PoolVector2Array
+var path_follow_index: int
 
-# Steering Behavior Weights
-var weight_follow_path: float = 0.05
-
-# Steering Behavior Properties
+var flocking_distance: float = 1000.0
 
 func reset() -> void:
-	acceleration = Vector2()
-	wander_angle = 0.0
+	steering_force = Vector2()
 
 func calculate(delta: float) -> Vector2:
 	var force = Vector2()
@@ -174,8 +168,8 @@ func calculate(delta: float) -> Vector2:
 		if not accumulate_force(force):
 			return steering_force
 
-	if wall_avoidance:
-		force = _do_wall_avoidance(wall_avoidance_rays) * wall_avoidance_weight
+	if path_follow:
+		force = _do_path_follow(path_follow_points) * path_follow_weight
 
 		if not accumulate_force(force):
 			return steering_force
@@ -184,17 +178,6 @@ func calculate(delta: float) -> Vector2:
 
 func accumulate_force(force: Vector2) -> bool:
 	return false
-
-#	var new_velocity = host.get_velocity() + (acceleration * delta)
-#	new_velocity = limit(new_velocity, host.get_max_speed())
-#	acceleration = Vector2()
-#	return new_velocity
-
-func apply_force(steering_force : Vector2) -> void:
-	# Limit to within max force
-	steering_force = limit(steering_force, host.get_max_force())
-	var new_acceleration = steering_force / host.get_mass()
-	acceleration += new_acceleration
 
 func seek_on(target_position : Vector2, slowing_radius : float = 250.0) -> void:
 	seek = true
@@ -210,6 +193,7 @@ func wander_on(distance : int, radius: int, angle_change : float) -> void:
 	wander_distance = distance
 	wander_radius = radius
 	wander_angle_change = angle_change
+	wander_angle = 0.0
 
 func pursuit_on(evader: MovingEntity) -> void:
 	pursuit = true
@@ -220,7 +204,9 @@ func evade_on(pursuer: MovingEntity) -> void:
 	evade_pursuer = pursuer
 
 func path_follow_on(path_points: PoolVector2Array) -> void:
-	_do_path_follow(path_points)
+	path_follow = true
+	path_follow_points = path_points
+	path_follow_index = 0
 
 func obstacle_avoidance_on(raycasts: Node2D, max_avoid_force: float) -> void:
 	obstacle_avoidance = true
@@ -309,13 +295,13 @@ func _do_evade(pursuer: MovingEntity) -> Vector2:
 
 	return _do_flee(future_position)
 
-func _do_path_follow(path_points: PoolVector2Array) -> void:
+func _do_path_follow(path_points: PoolVector2Array) -> Vector2:
 	var target_position = path_points[path_follow_index]
 	if host.get_position().distance_to(target_position) < 50:
 		path_follow_index = wrapi(path_follow_index + 1, 0, path_points.size())
 		target_position = path_points[path_follow_index]
 
-	_do_seek(target_position, 0.0)
+	return _do_seek(target_position, 0.0)
 
 func _do_obstacle_avoidance(raycasts: Node2D, max_avoid_force: float) -> Vector2:
 	var force = Vector2()
