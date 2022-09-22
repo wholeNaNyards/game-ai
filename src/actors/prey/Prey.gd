@@ -66,13 +66,15 @@ func _physics_process(delta: float) -> void:
 
 	state_machine.physics_process(delta)
 
-func _on_PredatorDetector_body_entered(body: AI) -> void:
+func _on_PredatorDetector_body_entered(body: MovingEntity) -> void:
 	if body:
 		predator = body
+		steering_manager.evade_on(predator)
 
-func _on_PredatorDetector_body_exited(body: AI) -> void:
+func _on_PredatorDetector_body_exited(body: MovingEntity) -> void:
 	if body:
 		predator = null
+		steering_manager.evade_off()
 
 func get_animated_sprite() -> AnimatedSprite:
 	return animated_sprite

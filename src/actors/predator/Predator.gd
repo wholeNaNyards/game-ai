@@ -47,6 +47,7 @@ func _on_PreyDetector_body_entered(body: AI) -> void:
 func _on_PreyDetector_body_exited(body: AI) -> void:
 	if body:
 		prey = null
+		steering_manager.pursuit_off()
 
 func get_animated_sprite() -> AnimatedSprite:
 	return animated_sprite

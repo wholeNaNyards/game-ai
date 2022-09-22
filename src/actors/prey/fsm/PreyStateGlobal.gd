@@ -21,8 +21,13 @@ func execute_physics_process(prey, _delta: float) -> void:
 	else:
 		prey.animated_sprite.flip_h = true
 
-	if prey.wander:
-		prey.change_state("WANDERING")
+#	if prey.wander:
+#		prey.change_state("WANDERING")
+	
+	if Input.is_action_pressed("left_click"):
+		prey.steering_manager.seek_on(prey.get_global_mouse_position(), 400.0)
+	else:
+		prey.steering_manager.seek_off()
 
 	if prey.path_points:
 		prey.steering_manager.path_follow(prey.path_points)
@@ -37,5 +42,4 @@ func execute_physics_process(prey, _delta: float) -> void:
 		prey.change_state("SEEKING")
 
 	if prey.predator != null:
-		prey.steering_manager.evade(prey.predator)
 		prey.change_state("FLEEING")

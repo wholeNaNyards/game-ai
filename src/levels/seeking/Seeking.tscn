@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://assets/background.png" type="Texture" id=1]
-[ext_resource path="res://src/actors/prey/Prey.tscn" type="PackedScene" id=2]
-[ext_resource path="res://src/actors/predator/Predator.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/actors/prey/Prey.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/objects/Rock.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/background.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 984, 12 )
@@ -10,7 +10,7 @@ extents = Vector2( 984, 12 )
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 16, 560 )
 
-[node name="PredatorPrey" type="Node2D"]
+[node name="Seeking" type="Node2D"]
 
 [node name="Walls" type="Node2D" parent="."]
 
@@ -52,20 +52,27 @@ shape = SubResource( 2 )
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( 120, 173 )
-texture = ExtResource( 1 )
+texture = ExtResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( -840, -371 )
 anchor_mode = 0
 current = true
 
-[node name="Prey" parent="." instance=ExtResource( 2 )]
-position = Vector2( -414, -20 )
-group = "prey"
-wall_avoidance_length = 400.0
+[node name="Prey" parent="." instance=ExtResource( 1 )]
+position = Vector2( 154, 161 )
 
-[node name="Predator" parent="." instance=ExtResource( 3 )]
-position = Vector2( 198, 192 )
-mass = 2.0
-group = "predator"
-wander = false
+[node name="Rock" parent="." instance=ExtResource( 2 )]
+position = Vector2( -422, 397 )
+
+[node name="Rock2" parent="." instance=ExtResource( 2 )]
+position = Vector2( -68, 572 )
+
+[node name="Rock3" parent="." instance=ExtResource( 2 )]
+position = Vector2( 462, 422 )
+
+[node name="Rock4" parent="." instance=ExtResource( 2 )]
+position = Vector2( 400, 84 )
+
+[node name="Rock5" parent="." instance=ExtResource( 2 )]
+position = Vector2( -279, -56 )

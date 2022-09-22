@@ -28,74 +28,71 @@ var steering_force: Vector2
 
 # Steering Behaviors
 var wall_avoidance: bool = false
-var wall_avoidance_weight: float = 10.0
+var wall_avoidance_weight: float = 10.0 * 200.0
 var wall_avoidance_rays: Node2D
 
 var obstacle_avoidance: bool = false
-var obstacle_avoidance_weight: float = 10.0
+var obstacle_avoidance_weight: float = 10.0 * 200.0
 var obstacle_avoidance_rays: Node2D
 var obstacle_avoidance_force: float
 
 var evade: bool = false
-var evade_weight: float = 0.01
+var evade_weight: float = 0.01 * 200.0
 var evade_pursuer: MovingEntity
 
 var flee: bool = false
-var flee_weight: float = 1.0
+var flee_weight: float = 1.0 * 200.0
 var flee_position: Vector2
 
 var separation: bool = false
-var separation_weight: float = 1.0
+var separation_weight: float = 1.0 * 200.0
 var separation_group: String
-var separation_force: float
 
 var alignment: bool = false
-var alignment_weight: float = 1.0
+var alignment_weight: float = 1.0 * 200.0
 var alignment_group: String
 
 var cohesion: bool = false
-var cohesion_weight: float = 2.0
+var cohesion_weight: float = 2.0 * 200.0
 var cohesion_group: String
 
 var seek: bool = false
-var seek_weight: float = 1.0
+var seek_weight: float = 1.0 * 200.0
 var seek_position: Vector2
 var seek_slowing_radius: float
 
 var wander: bool = false
-var wander_weight: float = 1.0
-var wander_distance: int
-var wander_radius: int
+var wander_weight: float = 1.0 * 200.0
+var wander_distance: float
+var wander_radius: float
 var wander_angle_change: float
 var wander_angle : float
 
 var pursuit: bool = false
-var pursuit_weight: float = 1.0
+var pursuit_weight: float = 1.0 * 200.0
 var pursuit_evader: MovingEntity
 
 var offset_pursuit: bool = false
-var offset_pursuit_weight: float = 1.0
+var offset_pursuit_weight: float = 1.0 * 200.0
 var offset_pursuit_leader: MovingEntity
 var offset_pursuit_offset: Vector2
 
 var interpose: bool = false
-var interpose_weight: float = 1.0
+var interpose_weight: float = 1.0 * 200.0
 var interpose_target_1: MovingEntity
 var interpose_target_2: MovingEntity
 
 var path_follow: bool = false
-var path_follow_weight: float = 0.05
+var path_follow_weight: float = 0.05 * 200.0
 var path_follow_points: PoolVector2Array
 var path_follow_index: int
 
 var flocking_distance: float = 1000.0
 
-func reset() -> void:
+func calculate() -> Vector2:
 	steering_force = Vector2()
-
-func calculate(delta: float) -> Vector2:
 	var force = Vector2()
-
+	
 	if wall_avoidance:
 		force = _do_wall_avoidance(wall_avoidance_rays) * wall_avoidance_weight
 
@@ -121,7 +118,7 @@ func calculate(delta: float) -> Vector2:
 			return steering_force
 
 	if separation:
-		force = _do_separation(separation_group, separation_force) * separation_weight
+		force = _do_separation(separation_group) * separation_weight
 
 		if not accumulate_force(force):
 			return steering_force
@@ -177,31 +174,58 @@ func calculate(delta: float) -> Vector2:
 	return steering_force
 
 func accumulate_force(force: Vector2) -> bool:
-	return false
+	var magnitude_so_far: float = steering_force.length()
+	var magnitude_remaining: float = host.get_max_force() - magnitude_so_far
+
+	if magnitude_remaining <= 0.0:
+		return false
+	
+	var magnitude_to_add: float = force.length()
+	
+	if magnitude_to_add < magnitude_remaining:
+		steering_force += force
+	else:
+		steering_force += force.normalized() * magnitude_remaining
+
+	return true
 
 func seek_on(target_position : Vector2, slowing_radius : float = 250.0) -> void:
 	seek = true
 	seek_position = target_position
 	seek_slowing_radius = slowing_radius
 
+func seek_off() -> void:
+	seek = false
+
 func flee_on(target_position : Vector2) -> void:
 	flee = true
 	flee_position = target_position
 
-func wander_on(distance : int, radius: int, angle_change : float) -> void:
+func wander_on(distance : float, radius: float, angle_change : float) -> void:
+	if not wander:
+		wander_angle = 0.0
+
 	wander = true
 	wander_distance = distance
 	wander_radius = radius
 	wander_angle_change = angle_change
-	wander_angle = 0.0
+
+func wander_off() -> void:
+	wander = false
 
 func pursuit_on(evader: MovingEntity) -> void:
 	pursuit = true
 	pursuit_evader = evader
 
+func pursuit_off() -> void:
+	pursuit = false
+
 func evade_on(pursuer: MovingEntity) -> void:
 	evade = true
 	evade_pursuer = pursuer
+
+func evade_off() -> void:
+	evade = false
 
 func path_follow_on(path_points: PoolVector2Array) -> void:
 	path_follow = true
@@ -225,10 +249,9 @@ func cohesion_on(group: String) -> void:
 	cohesion = true
 	cohesion_group = group
 
-func separation_on(group: String, force: float) -> void:
+func separation_on(group: String) -> void:
 	separation = true
 	separation_group = group
-	separation_force = force
 
 func interpose_on(target_1: MovingEntity, target_2: MovingEntity) -> void:
 	interpose = true
@@ -247,33 +270,33 @@ func _do_seek(target_position : Vector2, slowing_radius : float = 250.0) -> Vect
 
 	# Start slowing down if we're withing the slowdown area
 	if distance < slowing_radius:
-		desired_velocity = desired_direction.normalized() * host.get_speed() * (distance / slowing_radius)
+		desired_velocity = desired_direction.normalized() * host.get_max_speed() * (distance / slowing_radius)
 	else:
-		desired_velocity = desired_direction.normalized() * host.get_speed()
+		desired_velocity = desired_direction.normalized() * host.get_max_speed()
 
 	return desired_velocity - host.get_velocity()
 
 func _do_flee(target_position: Vector2) -> Vector2:
 	var desired_direction = host.get_position() - target_position
-	var desired_velocity = desired_direction.normalized() * host.get_speed()
+	var desired_velocity = desired_direction.normalized() * host.get_max_speed()
 
 	return desired_velocity - host.get_velocity()
 
-func _do_wander(wander_distance : int, wander_radius: int, wander_angle_change : float) -> Vector2:
+func _do_wander(distance : float, radius: float, angle_change : float) -> Vector2:
 	var host_velocity = host.get_velocity()
 		# Calculate the circle center
 	var wander_circle_center = Vector2(host_velocity.x, host_velocity.y)
-	wander_circle_center = wander_circle_center.normalized() * wander_distance
+	wander_circle_center = wander_circle_center.normalized() * distance
 
 	# Calculate the displacement force
-	var displacement = Vector2.UP * wander_radius
+	var displacement = Vector2.UP * radius
 
 	# Randomly change the vector direction by making it change its current angle
 	var length = displacement.length()
 	displacement = Vector2(cos(wander_angle) * length, sin(wander_angle) * length)
 	
 	# Change wander_angle just a bit, so it won't have the same value in the next frame
-	wander_angle += randf() * wander_angle_change - wander_angle_change * 0.5
+	wander_angle += randf() * angle_change - angle_change * 0.5
 
 	return wander_circle_center + displacement
 
@@ -303,21 +326,47 @@ func _do_path_follow(path_points: PoolVector2Array) -> Vector2:
 
 	return _do_seek(target_position, 0.0)
 
-func _do_obstacle_avoidance(raycasts: Node2D, max_avoid_force: float) -> Vector2:
+func _do_obstacle_avoidance(raycasts: Node2D, min_box_length: float) -> Vector2:
 	var force = Vector2()
 	var host_velocity = host.get_velocity()
 	raycasts.rotation = host_velocity.angle()
 
-	var length = host_velocity.length()
+	var closest_intersecting_ray: RayCast2D
+
+	var length = min_box_length + (host.get_speed() / host.get_max_speed()) * min_box_length
+
 	for raycast in raycasts.get_children():
 		raycast = raycast as RayCast2D
 		raycast.cast_to.x = length
 		raycast.force_raycast_update()
+
 		if raycast.is_colliding():
-			var obstacle : PhysicsBody2D = raycast.get_collider()
-			var avoid_direction = host.get_position() + host_velocity - obstacle.global_position
-			force = avoid_direction.normalized() * max_avoid_force
-			break
+			if closest_intersecting_ray == null:
+				closest_intersecting_ray = raycast
+			else:
+				# Check if this Ray is closer than the current closest ray
+				var host_position = host.get_position()
+				var new_ray_distance = host_position.distance_squared_to(raycast.get_collision_point())
+				var old_ray_distance = host_position.distance_squared_to(closest_intersecting_ray.get_collision_point())
+				if new_ray_distance < old_ray_distance:
+					closest_intersecting_ray = raycast
+
+	if closest_intersecting_ray != null:
+		# Calculate that avoid force
+		var obstacle: PhysicsBody2D = closest_intersecting_ray.get_collider()
+		var collision_shape = obstacle.get_node("CollisionShape2D")
+		var obstacle_local: Vector2 = host.to_local(obstacle.global_position)
+
+		var multiplier: float = 1.0 + (length - obstacle_local.x) / length
+
+		# Calculate the lateral force
+		var obstacle_radius = collision_shape.shape.radius
+		force.y = (obstacle_radius - obstacle_local.y)  * multiplier
+
+		var breaking_weight = 0.2
+		force.x = (obstacle_radius - obstacle_local.x)  * breaking_weight
+		
+		force = host.to_global(force)
 
 	return force
 
@@ -363,25 +412,25 @@ func _do_offset_pursuit(leader: MovingEntity, offset: Vector2) -> Vector2:
 	return _do_seek(global_offset, 50.0)
 
 func _do_alignment(group : String) -> Vector2:
-	var force = Vector2()
-	var neighbor_count: float = 0.0
+	var average_heading = Vector2()
+	var neighbor_count: int = 0
 
 	for entity in  get_tree().get_nodes_in_group(group):
 		var entity_position: Vector2 = entity.get_position()
 		var host_position: Vector2 = host.get_position()
 		if entity != host and entity_position.distance_to(host_position) <= flocking_distance:
-			force += entity.get_heading() * entity.get_velocity().length()
+			average_heading += entity.get_heading()
 			neighbor_count += 1
 
 	if neighbor_count != 0:
-		force /= float(neighbor_count)
-		force -= host.get_heading() * host.get_velocity().length()
+		average_heading /= float(neighbor_count)
+		average_heading -= host.get_heading()
 
-	return force
+	return average_heading
 
 func _do_cohesion(group : String) -> Vector2:
 	var center_of_mass = Vector2()
-	var neighbor_count: float = 0.0
+	var neighbor_count: int = 0
 
 	for entity in  get_tree().get_nodes_in_group(group):
 		var entity_position: Vector2 = entity.get_position()
@@ -396,7 +445,7 @@ func _do_cohesion(group : String) -> Vector2:
 	else:
 		return center_of_mass
 
-func _do_separation(group : String, separation_force: float) -> Vector2:
+func _do_separation(group : String) -> Vector2:
 	var force = Vector2()
 
 	for entity in  get_tree().get_nodes_in_group(group):
@@ -404,7 +453,7 @@ func _do_separation(group : String, separation_force: float) -> Vector2:
 		var host_position: Vector2 = host.get_position()
 		if entity != host and entity_position.distance_to(host_position) <= flocking_distance:
 			var to_entity: Vector2 = host_position - entity_position
-			force += (to_entity.normalized() / to_entity.length()) * separation_force
+			force += (to_entity.normalized() / to_entity.length())
 
 	return force
 
@@ -421,10 +470,3 @@ func _do_interpose(target_1: MovingEntity, target_2: MovingEntity) -> Vector2:
 	var future_mid_point: Vector2 = (target_1_future_position + target_2_future_position) / 2.0
 
 	return _do_seek(future_mid_point, 0.0)
-
-func limit(vector: Vector2, max_value: float) -> Vector2:
-	var length = vector.length()
-	if length > max_value:
-		vector = (vector / length) * max_value
-
-	return vector
