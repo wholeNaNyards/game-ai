@@ -3,7 +3,10 @@ extends State
 
 func enter(prey) -> void:
 	prey.get_fsm().update_label("FOLLOWING")
-	prey.get_animated_sprite().play("walking")
+	if prey.has_method("get_animation_player"):
+		prey.get_animation_player().play("walking")
+	else:
+		prey.get_animated_sprite().play("walking")
 
 func exit(_prey) -> void:
 	queue_free()

@@ -1,6 +1,7 @@
 class_name Prey
 extends Vehicle
 
+onready var animation_player : AnimationPlayer = $AnimationPlayer
 onready var animated_sprite : AnimatedSprite = $AnimatedSprite
 onready var state_machine : StateMachine = $StateMachine
 onready var predator_detector_raycasts : Node2D = $PredatorDetectorRaycasts
@@ -48,6 +49,9 @@ func _on_PredatorDetector_body_exited(body: MovingEntity) -> void:
 	if body:
 		predator = null
 		steering_manager.off("evade")
+
+func get_animation_player() -> AnimationPlayer:
+	return animation_player
 
 func get_animated_sprite() -> AnimatedSprite:
 	return animated_sprite

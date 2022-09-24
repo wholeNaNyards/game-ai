@@ -30,7 +30,7 @@ func _physics_process(_delta: float) -> void:
 	heading_current_sum += heading
 	heading_current_frame += 1
 
-	if heading_current_frame == 20:
+	if heading_current_frame == 10:
 		average_heading = heading_current_sum / float (heading_current_frame)
 		heading_current_sum = Vector2()
 		heading_current_frame = 0

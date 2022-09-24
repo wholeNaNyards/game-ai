@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://src/actors/vehicle/Vehicle.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/actors/prey/Prey.gd" type="Script" id=2]
 [ext_resource path="res://src/actors/prey/Prey.tres" type="SpriteFrames" id=3]
 [ext_resource path="res://src/utils/fsm/StateMachine.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/player/bird/Bird_Shadow.png" type="Texture" id=5]
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 55.0
@@ -11,6 +12,86 @@ height = 18.0
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 184.567
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ "walking" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "walking"
+length = 0.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "walking" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 0.333, 3.333, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -2 ), Vector2( 0, -14 ), Vector2( 0, -2 ) ]
+}
 
 [node name="Prey" instance=ExtResource( 1 )]
 position = Vector2( 1, 0 )
@@ -33,13 +114,8 @@ monitorable = false
 position = Vector2( 0, -32 )
 shape = SubResource( 1 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="." index="3"]
-position = Vector2( -1, 0 )
-frames = ExtResource( 3 )
-animation = "walking"
-frame = 2
-
-[node name="ObstacleAvoidanceRays" type="Node2D" parent="." index="4"]
+[node name="ObstacleAvoidanceRays" type="Node2D" parent="." index="3"]
+visible = false
 
 [node name="RayCast2D" type="RayCast2D" parent="ObstacleAvoidanceRays" index="0"]
 position = Vector2( 64, 0 )
@@ -71,10 +147,11 @@ enabled = true
 cast_to = Vector2( 48, 0 )
 collision_mask = 16
 
-[node name="StateMachine" parent="." index="5" instance=ExtResource( 4 )]
+[node name="StateMachine" parent="." index="4" instance=ExtResource( 4 )]
 position = Vector2( -1, 8 )
 
-[node name="PredatorDetectorRaycasts" type="Node2D" parent="." index="6"]
+[node name="PredatorDetectorRaycasts" type="Node2D" parent="." index="5"]
+visible = false
 
 [node name="RayCast2D" type="RayCast2D" parent="PredatorDetectorRaycasts" index="0"]
 enabled = true
@@ -93,7 +170,8 @@ enabled = true
 cast_to = Vector2( 231, 0 )
 collision_mask = 57
 
-[node name="WallAvoidanceRays" type="Node2D" parent="." index="7"]
+[node name="WallAvoidanceRays" type="Node2D" parent="." index="6"]
+visible = false
 
 [node name="RayCast2D" type="RayCast2D" parent="WallAvoidanceRays" index="0"]
 enabled = true
@@ -111,6 +189,19 @@ position = Vector2( 0, 32 )
 enabled = true
 cast_to = Vector2( 100, 0 )
 collision_mask = 32
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="7"]
+anims/RESET = SubResource( 4 )
+anims/walking = SubResource( 3 )
+
+[node name="BirdShadow" type="Sprite" parent="." index="8"]
+modulate = Color( 1, 1, 1, 0.607843 )
+position = Vector2( -1, 0 )
+texture = ExtResource( 5 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="." index="9"]
+frames = ExtResource( 3 )
+animation = "walking"
 
 [connection signal="body_entered" from="PredatorDetector" to="." method="_on_PredatorDetector_body_entered"]
 [connection signal="body_exited" from="PredatorDetector" to="." method="_on_PredatorDetector_body_exited"]

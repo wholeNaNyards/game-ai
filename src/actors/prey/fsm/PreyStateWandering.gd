@@ -3,7 +3,7 @@ extends State
 
 func enter(prey) -> void:
 	prey.get_fsm().update_label("WANDERING")
-	prey.get_animated_sprite().play("walking")
+	prey.get_animation_player().play("walking")
 
 func exit(_prey) -> void:
 	queue_free()
