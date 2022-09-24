@@ -25,64 +25,52 @@ extends Node2D
 # Properties
 onready var host: MovingEntity = owner
 var steering_force: Vector2
+var steering_behaviors: Dictionary
 
 # Steering Behaviors
-var wall_avoidance: bool = false
 var wall_avoidance_weight: float = 10.0 * 200.0
 var wall_avoidance_rays: Node2D
 
-var obstacle_avoidance: bool = false
 var obstacle_avoidance_weight: float = 10.0 * 200.0
 var obstacle_avoidance_rays: Node2D
 var obstacle_avoidance_force: float
 
-var evade: bool = false
 var evade_weight: float = 0.01 * 200.0
 var evade_pursuer: MovingEntity
 
-var flee: bool = false
 var flee_weight: float = 1.0 * 200.0
 var flee_position: Vector2
 
-var separation: bool = false
 var separation_weight: float = 1.0 * 200.0
 var separation_group: String
 
-var alignment: bool = false
 var alignment_weight: float = 1.0 * 200.0
 var alignment_group: String
 
-var cohesion: bool = false
 var cohesion_weight: float = 2.0 * 200.0
 var cohesion_group: String
 
-var seek: bool = false
 var seek_weight: float = 1.0 * 200.0
 var seek_position: Vector2
 var seek_slowing_radius: float
 
-var wander: bool = false
 var wander_weight: float = 1.0 * 200.0
 var wander_distance: float
 var wander_radius: float
 var wander_angle_change: float
 var wander_angle : float
 
-var pursuit: bool = false
 var pursuit_weight: float = 1.0 * 200.0
 var pursuit_evader: MovingEntity
 
-var offset_pursuit: bool = false
 var offset_pursuit_weight: float = 1.0 * 200.0
 var offset_pursuit_leader: MovingEntity
 var offset_pursuit_offset: Vector2
 
-var interpose: bool = false
 var interpose_weight: float = 1.0 * 200.0
 var interpose_target_1: MovingEntity
 var interpose_target_2: MovingEntity
 
-var path_follow: bool = false
 var path_follow_weight: float = 0.05 * 200.0
 var path_follow_points: PoolVector2Array
 var path_follow_index: int
@@ -93,79 +81,79 @@ func calculate() -> Vector2:
 	steering_force = Vector2()
 	var force = Vector2()
 	
-	if wall_avoidance:
+	if steering_behaviors.has("wall_avoidance"):
 		force = _do_wall_avoidance(wall_avoidance_rays) * wall_avoidance_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if obstacle_avoidance:
+	if steering_behaviors.has("obstacle_avoidance"):
 		force = _do_obstacle_avoidance(obstacle_avoidance_rays, obstacle_avoidance_force) * obstacle_avoidance_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if evade:
+	if steering_behaviors.has("evade"):
 		force = _do_evade(evade_pursuer) * evade_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if flee:
+	if steering_behaviors.has("flee"):
 		force = _do_flee(flee_position) * flee_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if separation:
+	if steering_behaviors.has("separation"):
 		force = _do_separation(separation_group) * separation_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if alignment:
+	if steering_behaviors.has("alignment"):
 		force = _do_alignment(alignment_group) * alignment_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if cohesion:
+	if steering_behaviors.has("cohesion"):
 		force = _do_cohesion(cohesion_group) * cohesion_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if seek:
+	if steering_behaviors.has("seek"):
 		force = _do_seek(seek_position, seek_slowing_radius) * seek_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if wander:
+	if steering_behaviors.has("wander"):
 		force = _do_wander(wander_distance, wander_radius, wander_angle_change) * wander_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if pursuit:
+	if steering_behaviors.has("pursuit"):
 		force = _do_pursuit(pursuit_evader) * pursuit_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if offset_pursuit:
+	if steering_behaviors.has("offset_pursuit"):
 		force = _do_offset_pursuit(offset_pursuit_leader, offset_pursuit_offset) * offset_pursuit_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if interpose:
+	if steering_behaviors.has("interpose"):
 		force = _do_interpose(interpose_target_1, interpose_target_2) * interpose_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if path_follow:
+	if steering_behaviors.has("path_follow"):
 		force = _do_path_follow(path_follow_points) * path_follow_weight
 
 		if not accumulate_force(force):
@@ -189,77 +177,69 @@ func accumulate_force(force: Vector2) -> bool:
 
 	return true
 
+func off(behavior: String) -> void:
+	if steering_behaviors.has(behavior):
+		steering_behaviors[behavior] = false
+
 func seek_on(target_position : Vector2, slowing_radius : float = 250.0) -> void:
-	seek = true
+	steering_behaviors["seek"] = true
 	seek_position = target_position
 	seek_slowing_radius = slowing_radius
 
-func seek_off() -> void:
-	seek = false
-
 func flee_on(target_position : Vector2) -> void:
-	flee = true
+	steering_behaviors["flee"] = true
 	flee_position = target_position
 
 func wander_on(distance : float, radius: float, angle_change : float) -> void:
-	if not wander:
+	if not steering_behaviors.has("wander"):
 		wander_angle = 0.0
 
-	wander = true
+	steering_behaviors["wander"] = true
 	wander_distance = distance
 	wander_radius = radius
 	wander_angle_change = angle_change
 
-func wander_off() -> void:
-	wander = false
-
 func pursuit_on(evader: MovingEntity) -> void:
-	pursuit = true
+	steering_behaviors["pursuit"] = true
 	pursuit_evader = evader
 
-func pursuit_off() -> void:
-	pursuit = false
-
 func evade_on(pursuer: MovingEntity) -> void:
-	evade = true
+	steering_behaviors["evade"] = true
 	evade_pursuer = pursuer
 
-func evade_off() -> void:
-	evade = false
-
 func path_follow_on(path_points: PoolVector2Array) -> void:
-	path_follow = true
+	steering_behaviors["path_follow"] = true
 	path_follow_points = path_points
 	path_follow_index = 0
 
 func obstacle_avoidance_on(raycasts: Node2D, max_avoid_force: float) -> void:
-	obstacle_avoidance = true
+	steering_behaviors["obstacle_avoidance"] = true
 	obstacle_avoidance_rays = raycasts
 	obstacle_avoidance_force = max_avoid_force
 
 func wall_avoidance_on(raycasts: Node2D) -> void:
-	wall_avoidance = true
+	steering_behaviors["wall_avoidance"] = true
 	wall_avoidance_rays = raycasts
 
 func alignment_on(group: String) -> void:
-	alignment = true
+	steering_behaviors["alignment"] = true
 	alignment_group = group
 
 func cohesion_on(group: String) -> void:
-	cohesion = true
+	steering_behaviors["cohesion"] = true
 	cohesion_group = group
 
 func separation_on(group: String) -> void:
-	separation = true
+	steering_behaviors["separation"] = true
 	separation_group = group
 
 func interpose_on(target_1: MovingEntity, target_2: MovingEntity) -> void:
-	interpose = true
+	steering_behaviors["interpose"] = true
 	interpose_target_1 = target_1
 	interpose_target_2 = target_2
 
 func leader_following_on(leader: MovingEntity, offset: Vector2) -> void:
-	offset_pursuit = true
+	steering_behaviors["offset_pursuit"] = true
 	offset_pursuit_leader = leader
 	offset_pursuit_offset = offset
 

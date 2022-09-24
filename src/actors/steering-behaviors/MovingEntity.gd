@@ -15,6 +15,9 @@ func _ready() -> void:
 	heading = Vector2()
 	side = Vector2()
 
+	if group:
+		add_to_group(group)
+
 func _physics_process(_delta: float) -> void:
 	if velocity.length_squared() > 0.00000001:
 		heading = velocity.normalized()

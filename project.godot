@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "MovingEntity",
-"class": "AI",
-"language": "GDScript",
-"path": "res://src/actors/ai/AI.gd"
-}, {
 "base": "KinematicBody2D",
 "class": "MovingEntity",
 "language": "GDScript",
@@ -44,7 +39,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/actors/player/fsm/PlayerStateWalking.gd"
 }, {
-"base": "AI",
+"base": "Vehicle",
 "class": "Predator",
 "language": "GDScript",
 "path": "res://src/actors/predator/Predator.gd"
@@ -69,7 +64,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/actors/predator/fsm/PredatorStateResting.gd"
 }, {
-"base": "AI",
+"base": "Vehicle",
 "class": "Prey",
 "language": "GDScript",
 "path": "res://src/actors/prey/Prey.gd"
@@ -99,7 +94,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/actors/prey/fsm/PreyStateWandering.gd"
 }, {
-"base": "AI",
+"base": "Vehicle",
 "class": "Sheep",
 "language": "GDScript",
 "path": "res://src/actors/sheep/Sheep.gd"
@@ -118,9 +113,13 @@ _global_script_classes=[ {
 "class": "SteeringManager",
 "language": "GDScript",
 "path": "res://src/actors/steering-behaviors/SteeringManager.gd"
+}, {
+"base": "MovingEntity",
+"class": "Vehicle",
+"language": "GDScript",
+"path": "res://src/actors/vehicle/Vehicle.gd"
 } ]
 _global_script_class_icons={
-"AI": "",
 "MovingEntity": "",
 "Player": "",
 "PlayerStateGlobal": "",
@@ -141,7 +140,8 @@ _global_script_class_icons={
 "Sheep": "",
 "State": "",
 "StateMachine": "",
-"SteeringManager": ""
+"SteeringManager": "",
+"Vehicle": ""
 }
 
 [application]

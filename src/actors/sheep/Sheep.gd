@@ -1,5 +1,5 @@
 class_name Sheep
-extends AI
+extends Vehicle
 
 onready var animated_sprite : AnimatedSprite = $AnimatedSprite
 onready var state_machine : StateMachine = $StateMachine
@@ -7,21 +7,6 @@ onready var predator_detector_raycasts : Node2D = $PredatorDetectorRaycasts
 
 # Avoidance Steering
 var predator : MovingEntity
-
-# Leader Following
-export var initial_leader := NodePath()
-var leader: MovingEntity
-export var offset : Vector2 = Vector2(-10, -10)
-
-# Path Following
-export var path_follow := NodePath()
-var path_points: PoolVector2Array
-
-# Interpose
-export var initial_interpose_target_1 := NodePath()
-var interpose_target_1: MovingEntity
-export var initial_interpose_target_2 := NodePath()
-var interpose_target_2: MovingEntity
 
 func _ready() -> void:
 	state_machine.set_global_state(PreyStateGlobal.new())
@@ -59,10 +44,12 @@ func _physics_process(delta: float) -> void:
 func _on_PredatorDetector_body_entered(body: MovingEntity) -> void:
 	if body:
 		predator = body
+		steering_manager.evade_on(predator)
 
 func _on_PredatorDetector_body_exited(body: MovingEntity) -> void:
 	if body:
 		predator = null
+		steering_manager.off("evade")
 
 func get_animated_sprite() -> AnimatedSprite:
 	return animated_sprite

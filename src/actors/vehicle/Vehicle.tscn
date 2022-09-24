@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://src/actors/ai/AI.gd" type="Script" id=1]
+[ext_resource path="res://src/actors/vehicle/Vehicle.gd" type="Script" id=1]
 [ext_resource path="res://src/actors/steering-behaviors/SteeringManager.tscn" type="PackedScene" id=2]
 
 [node name="AI" type="KinematicBody2D"]

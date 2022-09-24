@@ -27,7 +27,7 @@ func execute_physics_process(predator, _delta: float) -> void:
 			predator.change_state("RESTING")
 
 	if predator.prey != null and !predator.resting:
-		predator.steering_manager.wander_off()
+		predator.steering_manager.off("wander")
 		predator.steering_manager.pursuit_on(predator.prey)
 		predator.stamina -= 2
 		predator.change_state("CHASING")

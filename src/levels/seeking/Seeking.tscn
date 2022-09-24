@@ -60,19 +60,24 @@ anchor_mode = 0
 current = true
 
 [node name="Prey" parent="." instance=ExtResource( 1 )]
-position = Vector2( 154, 161 )
+position = Vector2( 51, 176 )
+group = "prey"
+wall_avoidance = true
+obstacle_avoidance = true
 
-[node name="Rock" parent="." instance=ExtResource( 2 )]
+[node name="Rocks" type="Node2D" parent="."]
+
+[node name="Rock" parent="Rocks" instance=ExtResource( 2 )]
 position = Vector2( -422, 397 )
 
-[node name="Rock2" parent="." instance=ExtResource( 2 )]
+[node name="Rock2" parent="Rocks" instance=ExtResource( 2 )]
 position = Vector2( -68, 572 )
 
-[node name="Rock3" parent="." instance=ExtResource( 2 )]
+[node name="Rock3" parent="Rocks" instance=ExtResource( 2 )]
 position = Vector2( 462, 422 )
 
-[node name="Rock4" parent="." instance=ExtResource( 2 )]
+[node name="Rock4" parent="Rocks" instance=ExtResource( 2 )]
 position = Vector2( 400, 84 )
 
-[node name="Rock5" parent="." instance=ExtResource( 2 )]
+[node name="Rock5" parent="Rocks" instance=ExtResource( 2 )]
 position = Vector2( -279, -56 )

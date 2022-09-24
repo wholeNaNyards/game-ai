@@ -1,5 +1,5 @@
 class_name Predator
-extends AI
+extends Vehicle
 
 onready var animated_sprite = $AnimatedSprite
 onready var state_machine : StateMachine = $StateMachine
@@ -8,7 +8,7 @@ onready var prey_detector_raycasts : Node2D = $PreyDetectorRaycasts
 export (int, 1, 5000) var max_stamina = 2000
 onready var stamina : int = max_stamina
 var resting : bool = false
-var prey : AI
+var prey : MovingEntity
 
 func _ready() -> void:
 	state_machine.set_global_state(PredatorStateGlobal.new())
@@ -40,14 +40,14 @@ func _physics_process(delta: float) -> void:
 
 	state_machine.physics_process(delta)
 
-func _on_PreyDetector_body_entered(body: AI) -> void:
+func _on_PreyDetector_body_entered(body: MovingEntity) -> void:
 	if body:
 		prey = body
 
-func _on_PreyDetector_body_exited(body: AI) -> void:
+func _on_PreyDetector_body_exited(body: MovingEntity) -> void:
 	if body:
 		prey = null
-		steering_manager.pursuit_off()
+		steering_manager.off("pursuit")
 
 func get_animated_sprite() -> AnimatedSprite:
 	return animated_sprite
