@@ -62,10 +62,12 @@ current = true
 [node name="Prey" parent="." instance=ExtResource( 2 )]
 position = Vector2( -414, -20 )
 group = "prey"
-wall_avoidance_length = 400.0
+wall_avoidance = true
+wander = true
 
 [node name="Predator" parent="." instance=ExtResource( 3 )]
 position = Vector2( 198, 192 )
 mass = 2.0
 group = "predator"
-wander = false
+wall_avoidance = true
+wander = true

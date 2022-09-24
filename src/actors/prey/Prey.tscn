@@ -17,11 +17,6 @@ position = Vector2( 1, 0 )
 collision_layer = 4
 collision_mask = 57
 script = ExtResource( 2 )
-initial_leader = NodePath("")
-offset = Vector2( -10, -10 )
-path_follow = NodePath("")
-initial_interpose_target_1 = NodePath("")
-initial_interpose_target_2 = NodePath("")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
 visible = false

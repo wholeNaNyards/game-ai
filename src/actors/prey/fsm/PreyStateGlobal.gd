@@ -14,12 +14,18 @@ func execute_process(_prey, _delta: float) -> void:
 	pass
 
 func execute_physics_process(prey, _delta: float) -> void:
-	#	animated_sprite.rotation = velocity.angle()
+#	prey.animated_sprite.rotation = prey.velocity.angle()
 
-	if prey.velocity.x >= 0:
-		prey.animated_sprite.flip_h = false
+	if prey.average_heading.x >= 0:
+		if prey.group == "sheep":
+			prey.animated_sprite.flip_h = true
+		else:
+			prey.animated_sprite.flip_h = false
 	else:
-		prey.animated_sprite.flip_h = true
+		if prey.group == "sheep":
+			prey.animated_sprite.flip_h = false
+		else:
+			prey.animated_sprite.flip_h = true
 
 	if Input.is_action_pressed("left_click"):
 		prey.steering_manager.seek_on(prey.get_global_mouse_position(), 400.0)

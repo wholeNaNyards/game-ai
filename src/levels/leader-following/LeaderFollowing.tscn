@@ -66,98 +66,27 @@ current = true
 [node name="Leader" parent="." instance=ExtResource( 3 )]
 modulate = Color( 1, 0, 0, 1 )
 position = Vector2( -663, -221 )
-max_speed = 150
-speed = 300
-mass = null
-max_force = null
-group = null
-wander = null
-wander_distance = null
-wander_radius = null
-wander_angle_change = null
-alignment = null
-cohesion = null
-separation = null
-obstacle_avoidance = null
-max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
+path_follow = NodePath("../Path2D")
 
 [node name="Prey" parent="." instance=ExtResource( 3 )]
 position = Vector2( -661, -317 )
-max_speed = 175
-speed = 350
-mass = null
-max_force = null
-group = "prey"
-wander = null
-wander_distance = null
-wander_radius = null
-wander_angle_change = null
-alignment = null
-cohesion = null
-separation = null
-obstacle_avoidance = null
-max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
+max_speed = 250.0
+leader = NodePath("../Leader")
 
 [node name="Prey2" parent="." instance=ExtResource( 3 )]
 position = Vector2( -587, -320 )
-max_speed = 200
-speed = 400
-mass = null
-max_force = null
-group = "prey"
-wander = null
-wander_distance = null
-wander_radius = null
-wander_angle_change = null
-alignment = null
-cohesion = null
-separation = null
-obstacle_avoidance = null
-max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
+max_speed = 250.0
+leader = NodePath("../Prey")
 
 [node name="Prey3" parent="." instance=ExtResource( 3 )]
 position = Vector2( -520, -319 )
-max_speed = 200
-speed = 400
-mass = null
-max_force = null
-group = "prey"
-wander = null
-wander_distance = null
-wander_radius = null
-wander_angle_change = null
-alignment = null
-cohesion = null
-separation = null
-obstacle_avoidance = null
-max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
+max_speed = 250.0
+leader = NodePath("../Prey2")
 
 [node name="Prey4" parent="." instance=ExtResource( 3 )]
 position = Vector2( -455, -322 )
-max_speed = 200
-speed = 400
-mass = null
-max_force = 100000.0
-group = "prey"
-wander = null
-wander_distance = null
-wander_radius = null
-wander_angle_change = null
-alignment = null
-cohesion = null
-separation = null
-obstacle_avoidance = null
-max_avoid_force = null
-wall_avoidance = null
-wall_avoidance_length = null
+max_speed = 250.0
+leader = NodePath("../Prey3")
 
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource( 3 )

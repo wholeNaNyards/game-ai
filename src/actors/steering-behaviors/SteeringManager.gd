@@ -41,13 +41,13 @@ var evade_pursuer: MovingEntity
 var flee_weight: float = 1.0 * 200.0
 var flee_position: Vector2
 
-var separation_weight: float = 1.0 * 200.0
+var separation_weight: float = 10.0 * 200.0
 var separation_group: String
 
 var alignment_weight: float = 1.0 * 200.0
 var alignment_group: String
 
-var cohesion_weight: float = 2.0 * 200.0
+var cohesion_weight: float = 0.001 * 200.0
 var cohesion_group: String
 
 var seek_weight: float = 1.0 * 200.0
@@ -75,85 +75,85 @@ var path_follow_weight: float = 0.05 * 200.0
 var path_follow_points: PoolVector2Array
 var path_follow_index: int
 
-var flocking_distance: float = 1000.0
+var flocking_distance: float = 600.0
 
 func calculate() -> Vector2:
 	steering_force = Vector2()
 	var force = Vector2()
 	
-	if steering_behaviors.has("wall_avoidance"):
+	if steering_behaviors.has("wall_avoidance") and steering_behaviors["wall_avoidance"]:
 		force = _do_wall_avoidance(wall_avoidance_rays) * wall_avoidance_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("obstacle_avoidance"):
+	if steering_behaviors.has("obstacle_avoidance") and steering_behaviors["obstacle_avoidance"]:
 		force = _do_obstacle_avoidance(obstacle_avoidance_rays, obstacle_avoidance_force) * obstacle_avoidance_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("evade"):
+	if steering_behaviors.has("evade") and steering_behaviors["evade"]:
 		force = _do_evade(evade_pursuer) * evade_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("flee"):
+	if steering_behaviors.has("flee") and steering_behaviors["flee"]:
 		force = _do_flee(flee_position) * flee_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("separation"):
+	if steering_behaviors.has("separation") and steering_behaviors["separation"]:
 		force = _do_separation(separation_group) * separation_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("alignment"):
+	if steering_behaviors.has("alignment") and steering_behaviors["alignment"]:
 		force = _do_alignment(alignment_group) * alignment_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("cohesion"):
+	if steering_behaviors.has("cohesion") and steering_behaviors["cohesion"]:
 		force = _do_cohesion(cohesion_group) * cohesion_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("seek"):
+	if steering_behaviors.has("seek") and steering_behaviors["seek"]:
 		force = _do_seek(seek_position, seek_slowing_radius) * seek_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("wander"):
+	if steering_behaviors.has("wander") and steering_behaviors["wander"]:
 		force = _do_wander(wander_distance, wander_radius, wander_angle_change) * wander_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("pursuit"):
+	if steering_behaviors.has("pursuit") and steering_behaviors["pursuit"]:
 		force = _do_pursuit(pursuit_evader) * pursuit_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("offset_pursuit"):
+	if steering_behaviors.has("offset_pursuit") and steering_behaviors["offset_pursuit"]:
 		force = _do_offset_pursuit(offset_pursuit_leader, offset_pursuit_offset) * offset_pursuit_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("interpose"):
+	if steering_behaviors.has("interpose") and steering_behaviors["interpose"]:
 		force = _do_interpose(interpose_target_1, interpose_target_2) * interpose_weight
 
 		if not accumulate_force(force):
 			return steering_force
 
-	if steering_behaviors.has("path_follow"):
+	if steering_behaviors.has("path_follow") and steering_behaviors["path_follow"]:
 		force = _do_path_follow(path_follow_points) * path_follow_weight
 
 		if not accumulate_force(force):
@@ -300,7 +300,7 @@ func _do_evade(pursuer: MovingEntity) -> Vector2:
 
 func _do_path_follow(path_points: PoolVector2Array) -> Vector2:
 	var target_position = path_points[path_follow_index]
-	if host.get_position().distance_to(target_position) < 50:
+	if host.get_position().distance_to(target_position) < 200:
 		path_follow_index = wrapi(path_follow_index + 1, 0, path_points.size())
 		target_position = path_points[path_follow_index]
 
@@ -385,7 +385,7 @@ func _do_wall_avoidance(raycasts: Node2D) -> Vector2:
 
 func _do_offset_pursuit(leader: MovingEntity, offset: Vector2) -> Vector2:
 	# Calculate offset in global coordinates
-	var heading_offset: Vector2 = leader.get_heading() * offset.y
+	var heading_offset: Vector2 = leader.get_average_heading() * offset.y
 	var side_offset: Vector2 = leader.get_side() * offset.x * -1
 	var global_offset: Vector2 = heading_offset + side_offset + leader.get_position()
 
@@ -399,17 +399,18 @@ func _do_alignment(group : String) -> Vector2:
 		var entity_position: Vector2 = entity.get_position()
 		var host_position: Vector2 = host.get_position()
 		if entity != host and entity_position.distance_to(host_position) <= flocking_distance:
-			average_heading += entity.get_heading()
+			average_heading += entity.get_average_heading()
 			neighbor_count += 1
 
 	if neighbor_count != 0:
 		average_heading /= float(neighbor_count)
-		average_heading -= host.get_heading()
+		average_heading -= host.get_average_heading()
 
 	return average_heading
 
 func _do_cohesion(group : String) -> Vector2:
 	var center_of_mass = Vector2()
+	var force = Vector2()
 	var neighbor_count: int = 0
 
 	for entity in  get_tree().get_nodes_in_group(group):
@@ -421,9 +422,9 @@ func _do_cohesion(group : String) -> Vector2:
 
 	if neighbor_count != 0:
 		center_of_mass /= float(neighbor_count)
-		return _do_seek(center_of_mass, 0.0)
-	else:
-		return center_of_mass
+		force = _do_seek(center_of_mass, 0.0)
+
+	return force
 
 func _do_separation(group : String) -> Vector2:
 	var force = Vector2()
@@ -433,7 +434,7 @@ func _do_separation(group : String) -> Vector2:
 		var host_position: Vector2 = host.get_position()
 		if entity != host and entity_position.distance_to(host_position) <= flocking_distance:
 			var to_entity: Vector2 = host_position - entity_position
-			force += (to_entity.normalized() / to_entity.length())
+			force += to_entity.normalized() / to_entity.length()
 
 	return force
 

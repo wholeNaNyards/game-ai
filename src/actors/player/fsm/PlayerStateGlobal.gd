@@ -24,7 +24,7 @@ func execute_physics_process(player, _delta: float) -> void:
 		player.direction += Vector2.UP
 	if Input.is_action_pressed("move_down"):
 		player.direction += Vector2.DOWN
-	
+
 	if player.direction.x > 0:
 		player.get_animated_sprite().flip_h = true
 	elif player.direction.x < 0:
@@ -34,5 +34,5 @@ func execute_physics_process(player, _delta: float) -> void:
 		player.velocity = player.velocity.linear_interpolate(Vector2.ZERO, player.friction)
 		player.velocity = player.move_and_slide(player.velocity)
 	else:
-		player.velocity = player.velocity.linear_interpolate(player.direction.normalized() * player.speed, player.acceleration)
+		player.velocity = player.velocity.linear_interpolate(player.direction.normalized() * player.max_speed, player.acceleration)
 		player.velocity = player.move_and_slide(player.velocity)

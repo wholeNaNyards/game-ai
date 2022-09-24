@@ -62,20 +62,20 @@ func _ready() -> void:
 		steering_manager.wander_on(wander_distance, wander_radius, wander_angle_change)
 
 	if leader:
-		steering_manager.leader_following(get_node(leader), offset)
+		steering_manager.leader_following_on(get_node(leader), offset)
 
 	if interpose_target_1 and interpose_target_2:
-		steering_manager.interpose(get_node(interpose_target_1), get_node(interpose_target_2))
+		steering_manager.interpose_on(get_node(interpose_target_1), get_node(interpose_target_2))
 
 	if path_follow:
-		steering_manager.path_follow(get_node(path_follow).curve.get_baked_points())
+		steering_manager.path_follow_on(get_node(path_follow).curve.get_baked_points())
 
 func _physics_process(delta: float) -> void:
 	var steering_force: Vector2 = steering_manager.calculate()
 	var acceleration: Vector2 = steering_force / mass
 	var new_velocity: Vector2 = velocity + (acceleration * delta)
 	new_velocity = truncate(new_velocity, max_speed)
-	
+
 	velocity = move_and_slide(new_velocity)
 
 func truncate(vector: Vector2, max_value: float) -> Vector2:

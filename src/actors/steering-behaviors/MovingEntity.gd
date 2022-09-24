@@ -3,6 +3,9 @@ extends KinematicBody2D
 
 var velocity: Vector2
 var heading: Vector2
+var average_heading: Vector2
+var heading_current_sum: Vector2
+var heading_current_frame: int
 var side: Vector2
 export (float, 0.1, 20.0) var mass = 1.0
 export (float, 1.0, 1000.0) var max_speed = 500.0
@@ -13,6 +16,7 @@ export (String) var group
 func _ready() -> void:
 	velocity = Vector2()
 	heading = Vector2()
+	average_heading = Vector2()
 	side = Vector2()
 
 	if group:
@@ -23,11 +27,22 @@ func _physics_process(_delta: float) -> void:
 		heading = velocity.normalized()
 		side = heading.tangent()
 
+	heading_current_sum += heading
+	heading_current_frame += 1
+
+	if heading_current_frame == 20:
+		average_heading = heading_current_sum / float (heading_current_frame)
+		heading_current_sum = Vector2()
+		heading_current_frame = 0
+
 func get_velocity() -> Vector2:
 	return velocity
 
 func get_heading() -> Vector2:
 	return heading
+
+func get_average_heading() -> Vector2:
+	return average_heading
 
 func get_side() -> Vector2:
 	return side
