@@ -1,4 +1,4 @@
-# Emergent Behavoirs (AI)
+# AI & Emergent Behavoirs
 
 <a href='https://godotengine.org/'>Godot</a> is a video game engine, similar to Unreal or Unity.  This project is my Godot adaptation of some of the ideas found in the books <a href='https://www.oreilly.com/library/view/programming-game-ai/9781556220784/'>Programming Game AI by Example</a> and <a href='https://gameprogrammingpatterns.com/'>Game Programming Patterns</a>. It is written in GDScript, a language similar to Python.  All artwork was made by either me or my lovely wife.
 <br>
